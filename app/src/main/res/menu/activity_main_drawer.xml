@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/danh_ngon"
+            android:icon="@android:drawable/star_on"
+            android:title="Danh Ngôn" />
+        <item
+            android:id="@+id/yeu_thich"
+            android:icon="@android:drawable/star_on"
+            android:title="Yêu thích" />
+        <item
+            android:id="@+id/danh_gia"
+            android:icon="@android:drawable/star_on"
+            android:title="Đánh giá" />
+        <item
+            android:id="@+id/cai_dat"
+            android:icon="@android:drawable/ic_menu_set_as"
+            android:title="Cài đặt tiện ích" />
+        <item
+            android:id="@+id/thay_doi_ui"
+            android:icon="@android:drawable/ic_menu_set_as"
+            android:title="Thay đổi giao diện" />
+        <item
+            android:id="@+id/chia_se"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Chia sẻ" />
+        <item
+            android:id="@+id/more_app"
+            android:icon="@android:drawable/sym_def_app_icon"
+            android:title="Ứng dụng khác" />
+    </group>
+</menu>
