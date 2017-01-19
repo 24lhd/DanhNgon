@@ -3,13 +3,11 @@ package com.d.fragment;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,13 +38,9 @@ public class FmDanhNgon extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            this.inflater=inflater;
-            View rootView = inflater.inflate(R.layout.layout_danh_ngon, container, false);
-          mainActivity= (MainActivity) getArguments().getSerializable("fm");
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-//        RecyclerView recyclerView=new RecyclerView(getActivity());
-
+        this.inflater=inflater;
+        View rootView = inflater.inflate(R.layout.layout_danh_ngon, container, false);
+        mainActivity= (MainActivity) getArguments().getSerializable("fm");
         tabLayout= (TabLayout) rootView.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) rootView.findViewById(R.id.container);
         mSectionsPagerAdapter = new SectionsPagerAdapter(mainActivity.getSupportFragmentManager());
@@ -55,15 +49,12 @@ public class FmDanhNgon extends Fragment {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setSelected(false);
-        Log.e("faker",""+tabLayout.getTabCount());
         for (int i = 0; i <tabLayout.getTabCount(); i++) {
             View view=inflater.inflate(R.layout.tab_custem,null);
             TextView tv= (TextView) view.findViewById(R.id.tv_tab);
             tv.setText(""+i);
             tabLayout.getTabAt(i).setCustomView(tv);
-            Log.e("faker",""+i);
         }
-
         tabLayout.setSelectedTabIndicatorHeight(0);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -82,15 +73,8 @@ public class FmDanhNgon extends Fragment {
                 tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
             }
         });
-
-
+        tabLayout.getTabAt(0).select();
         return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
