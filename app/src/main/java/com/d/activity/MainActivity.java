@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             args.putSerializable("fm", MainActivity.this);
              fmDanhNgon.setArguments(args);
              transaction.replace(R.id.frame_fm, fmDanhNgon);
-             transaction.commit();
+             transaction.commit();//
              Log.e("faker","int");
 
         } else if (id == R.id.chia_se) {
