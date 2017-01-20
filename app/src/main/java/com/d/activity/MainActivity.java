@@ -209,15 +209,15 @@ public class MainActivity extends AppCompatActivity implements
         tabUI.addTab(tabStatus);
 
         TabLayout.Tab tabBar=tabUI.newTab();
-        tabBar.setText("Bar");
+        tabBar.setText("Action Bar");
         tabUI.addTab(tabBar);
 
         TabLayout.Tab tab=tabUI.newTab();
-        tab.setText("Tab unselect");
+        tab.setText("Tab Unselect");
         tabUI.addTab(tab);
 
         TabLayout.Tab tabCategory=tabUI.newTab();
-        tabCategory.setText("Tab select");
+        tabCategory.setText("Tab Select");
         tabUI.addTab(tabCategory);
 
         TabLayout.Tab tabBg=tabUI.newTab();

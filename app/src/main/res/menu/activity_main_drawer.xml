@@ -10,17 +10,17 @@
             android:icon="@android:drawable/star_on"
             android:title="Yêu thích" />
         <item
-            android:id="@+id/danh_gia"
-            android:icon="@android:drawable/star_on"
-            android:title="Đánh giá" />
+            android:id="@+id/thay_doi_ui"
+            android:icon="@android:drawable/ic_menu_set_as"
+            android:title="Thay đổi giao diện" />
         <item
             android:id="@+id/cai_dat"
             android:icon="@android:drawable/ic_menu_set_as"
             android:title="Cài đặt tiện ích" />
         <item
-            android:id="@+id/thay_doi_ui"
-            android:icon="@android:drawable/ic_menu_set_as"
-            android:title="Thay đổi giao diện" />
+            android:id="@+id/danh_gia"
+            android:icon="@android:drawable/star_on"
+            android:title="Đánh giá" />
         <item
             android:id="@+id/chia_se"
             android:icon="@drawable/ic_menu_share"

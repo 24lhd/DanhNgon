@@ -86,6 +86,7 @@ public class FmDanhNgon extends Fragment {
 
         mViewPager.setCurrentItem(0);
     }
+
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
@@ -96,6 +97,8 @@ public class FmDanhNgon extends Fragment {
             Bundle args = new Bundle();
             ArrayList<DanhNgon> danhNgonCategory=new ArrayList<>();
             for (DanhNgon danhNgon:danhNgons) if (danhNgon.getCategory().equals(categories.get(position).getMa())) danhNgonCategory.add(danhNgon);
+            TextView tv= (TextView) tabLayout.getTabAt(position).getCustomView();
+            tv.setText( categories.get(position).getCategory()+" ("+danhNgonCategory.size()+")");
             args.putSerializable(ARG_SECTION_NUMBER, categories.get(position));
             args.putSerializable(MainActivity.LIST_DATA,danhNgonCategory);
             fragment.setArguments(args);

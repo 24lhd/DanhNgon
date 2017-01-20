@@ -32,6 +32,7 @@
     <color name="K2">#9E9E9E</color>
     <color name="L2">#607D8B</color>
     <color name="O2">#000000</color>
+    <color name="colorBlue_200">#5c94cc</color>
     <array name="colors">
         <item >@color/A</item>
         <item >@color/B</item>

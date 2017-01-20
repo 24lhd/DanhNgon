@@ -19,7 +19,7 @@ import java.util.Date;
  */
 
 public class ScreenShort {
-    public static File takeSreenShortByView(View viewInput, Context context) {
+    public  File takeSreenShortByView(View viewInput, Context context) {
         Date now = new Date();
         ByteArrayOutputStream bytearrayoutputstream;
         Bitmap bitmap;
@@ -31,7 +31,7 @@ public class ScreenShort {
         view.setDrawingCacheEnabled(true);
         bitmap = view.getDrawingCache();
         bitmap.compress(Bitmap.CompressFormat.PNG, 60, bytearrayoutputstream);
-        file = new File( Environment.getExternalStorageDirectory() + "/GaCongNghiep/"+now+".png");
+        file = new File( Environment.getExternalStorageDirectory() + "/SreenShort/"+now.toString().trim()+".png");
         file.getParentFile().mkdirs();
         try{
             file.createNewFile();
@@ -45,7 +45,7 @@ public class ScreenShort {
         return file;
     }
 
-    public static void shareImageByFile(File file,Context context){
+    public void shareImageByFile(File file,Context context){
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);

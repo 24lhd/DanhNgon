@@ -13,6 +13,7 @@
                     android:text="Tên Lớp"
                     android:layout_marginTop="@dimen/margin_item"
                     android:layout_marginLeft="@dimen/margin_item"
+                    android:background="@drawable/select"
                     android:singleLine="false"
                     android:textColor="@color/colorBlack"
                     style="@style/TextAppearance.AppCompat.Medium"

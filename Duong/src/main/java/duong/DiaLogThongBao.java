@@ -69,6 +69,23 @@ public class DiaLogThongBao {
 //        no.setOnClickListener(noListener);
         return alertDialog;
     }
+    public static void createDiaLogCustemView(Context context, View view, String title
+            , String nameBtnYes, String nameBtnNo, int colorBtn, View.OnClickListener yesListener
+            , View.OnClickListener noListener){
+        android.support.v7.app.AlertDialog.Builder turnOnLoactionDialog=new android.support.v7.app.AlertDialog.Builder(context);
+        turnOnLoactionDialog.setTitle(title);
+        turnOnLoactionDialog.setPositiveButton(nameBtnYes,null);
+        turnOnLoactionDialog.setNeutralButton(nameBtnNo,null);
+        turnOnLoactionDialog.setView(view);
+        android.support.v7.app.AlertDialog alertDialog=turnOnLoactionDialog.create();
+        alertDialog.show();
+        Button yes=alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        Button no=alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        yes.setTextColor(colorBtn);
+        no.setTextColor(colorBtn);
+        yes.setOnClickListener(yesListener);
+        no.setOnClickListener(noListener);
+    }
     public AlertDialog createDiaLogView(Context context,View view,String title,String msg
             ,String nameBtnYes,String nameBtnNo,int colorBtn,View.OnClickListener yesListener){
         AlertDialog.Builder turnOnLoactionDialog=new AlertDialog.Builder(context);
