@@ -1,31 +1,148 @@
 package com.d.activity;
 
+import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.d.danhngon.R;
 import com.d.database.DuLieu;
 import com.d.fragment.FmDanhNgon;
+import com.d.object.Category;
+import com.d.object.DanhNgon;
+import com.d.task.TaskGetCategory;
+import com.d.task.TaskGetDanhNgon;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 import duong.ChucNangPhu;
+import duong.Communication;
+import duong.DiaLogThongBao;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Serializable {
+import static com.d.database.DuLieu.PATH_DB;
 
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener  {
+
+    public static final String LIST_DATA = "list_data";
+    public static final String THIS = "this";
+    private Toolbar toolbar;
+    private ArrayList<Category> categories;
+    private ArrayList<DanhNgon> danhNgons;
+    private ProgressDialog progressDialog;
+    private DuLieu duLieu;
+    private int tabUISelect;
+    private TabLayout tabUI;
+    private FmDanhNgon fmDanhNgon;
+    private FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("faker",getPackageName());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        showDialogLoad(this, "Đang khởi tạo dữ liệu...");
+         duLieu = new DuLieu(this);
+            initData();
+    }
+    private void initData() {
+        try {
+                if (duLieu.checkDB()){
+                    ChucNangPhu.showLog("if "+duLieu.checkDB());
+                    startGetCategory();
+                }else {
+                    ChucNangPhu.showLog("else");
+                    duLieu.getDuongSQLite().copyDataBase(this, PATH_DB,"danhngon_db.sqlite");
+                    initData();
+                }
+            } catch (Exception e) {
+                ChucNangPhu.showLog("Exception");
+            }
+
+    }
+        public void startGetCategory() {
+        Handler handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if ((ArrayList<Category>) msg.obj != null){
+                    startGetDanhNgon();
+                    setCategories((ArrayList<Category>) msg.obj);
+                }else{
+                    initData();
+                }
+
+            }
+        };
+        TaskGetCategory taskGetCategory=new TaskGetCategory(this,handler);
+        taskGetCategory.execute();
+    }
+    public void startGetDanhNgon() {
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                ArrayList<DanhNgon> danhNgons = (ArrayList<DanhNgon>) msg.obj;
+                if (danhNgons != null){
+                    initView();
+                    hideDialogLoad();
+                    setDanhNgons(danhNgons);
+                    setViewDanhNgon();
+                }else{
+                    initData();
+                }
+
+            }
+        };
+        TaskGetDanhNgon getDanhNgon = new TaskGetDanhNgon(this, handler);
+        getDanhNgon.execute();
+    }
+
+    public void hideDialogLoad() {
+        progressDialog.dismiss();
+    }
+
+    public void showDialogLoad(Context context, String msg) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(msg);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<Category> categories) {
+        this.categories = categories;
+    }
+
+    public ArrayList<DanhNgon> getDanhNgons() {
+        return danhNgons;
+    }
+
+    public void setDanhNgons(ArrayList<DanhNgon> danhNgons) {
+        this.danhNgons = danhNgons;
+    }
+
+    private void initView() {
+        frameLayout= (FrameLayout) findViewById(R.id.frame_fm);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -34,36 +151,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        DuLieu duLieu=new DuLieu(this);
-        setViewDanhNgon();
     }
-    /**
-     * frangment custem
-     */
-//    public static class PlaceholderFragment extends Fragment {
-//
-//        private static final String ARG_SECTION_NUMBER = "section_number";
-//
-//        public PlaceholderFragment() {
-//        }
-//
-//        public static PlaceholderFragment newInstance(int sectionNumber) {
-//            PlaceholderFragment fragment = new PlaceholderFragment();
-//            Bundle args = new Bundle();
-//            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-//            fragment.setArguments(args);
-//            return fragment;
-//        }
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-////            View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
-////            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-////            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-//            RecyclerView recyclerView=new RecyclerView(getActivity());
-//            return recyclerView;
-//        }
-//    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -71,21 +160,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else
             ChucNangPhu.finishDoubleCick(this);
-
     }
-    @SuppressWarnings("StatementWithEmptyBody")
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-         if (id == R.id.danh_ngon) {
-             setViewDanhNgon();
+        toolbar.setTitle(item.getTitle());
+        if (id == R.id.danh_ngon) {
+          setViewDanhNgon();
         } else if (id == R.id.chia_se) {
-             android.support.v4.app.FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
-             transaction.replace(R.id.frame_fm, new FmDanhNgon.PlaceholderFragment());
-             transaction.commit();
-             Log.e("faker","int");
+            initData();
         } else if (id == R.id.more_app) {
 
+        }else if (id == R.id.thay_doi_ui) {
+            LayoutInflater layoutInflater=getLayoutInflater();
+
+            View view=layoutInflater.inflate(R.layout.layout_select_ui,null);
+             tabUI= (TabLayout) view.findViewById(R.id.tab_ui_layout);
+            tabUI.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabUI.setTabGravity(TabLayout.GRAVITY_FILL);
+            tabUI.setSelectedTabIndicatorHeight(0);
+
+            TabLayout.Tab tabStatus=tabUI.newTab();
+            tabStatus.setText("Status Bar");
+            tabUI.addTab(tabStatus);
+
+            TabLayout.Tab tabBar=tabUI.newTab();
+            tabBar.setText("Bar");
+            tabUI.addTab(tabBar);
+
+            TabLayout.Tab tab=tabUI.newTab();
+            tab.setText("Tab unselect");
+            tabUI.addTab(tab);
+
+            TabLayout.Tab tabCategory=tabUI.newTab();
+            tabCategory.setText("Tab select");
+            tabUI.addTab(tabCategory);
+
+            TabLayout.Tab tabBg=tabUI.newTab();
+            tabBg.setText("Background");
+            tabUI.addTab(tabBg);
+            LayoutInflater inflater=getLayoutInflater();
+            for (int i = 0; i < tabUI.getTabCount(); i++) {
+                View viewTab=inflater.inflate(R.layout.tab_custem,null);
+                TextView tv2= (TextView) viewTab.findViewById(R.id.tv_tab);
+                tv2.setText(tabUI.getTabAt(i).getText());
+                tabUI.getTabAt(i).setCustomView(tv2);
+            }
+            tabUI.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                     tabUISelect=tab.getPosition();
+                    tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                }
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                }
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                }
+            });
+            tabUI.getTabAt(0).select();
+            tabUISelect=0;
+            DiaLogThongBao.createDiaLogView(this, view, null , null, null, getResources().getColor(R.color.colorPrimary),null, null).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -93,13 +235,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setViewDanhNgon() {
-        android.support.v4.app.FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
-        FmDanhNgon fmDanhNgon=new FmDanhNgon();
-        Bundle args = new Bundle();
-        args.putSerializable("fm", MainActivity.this);
-        fmDanhNgon.setArguments(args);
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+         fmDanhNgon=new FmDanhNgon();
         transaction.replace(R.id.frame_fm, fmDanhNgon);
-        transaction.commit();//
+        transaction.commit();
     }
+    public void onSelectUI(View v) {
+        FloatingActionButton floatingActionButton= (FloatingActionButton) v;
+        switch (tabUISelect){
+            case 1:
+                toolbar.setBackgroundColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                break;
+            case 2:
+                GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
+                shape_no.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                break;
+            case 3:
+                GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
+                shape_yes.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                break;
+            case 4:
+                frameLayout.setBackgroundColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                break;
+            default:
+                Window window = this.getWindow();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    window.setStatusBarColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                }else {
+                    Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
+                }
+                break;
+        }
 
+        for (int i = 0; i < tabUI.getTabCount(); i++) {
+            if (tabUI.getTabAt(i).isSelected()){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
+            }else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
+            }
+        }
+        for (int i = 0; i < fmDanhNgon.getTabLayout().getTabCount(); i++) {
+            if (fmDanhNgon.getTabLayout().getTabAt(i).isSelected()){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
+            }else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
+            }
+        }
+
+//        setTheme(R.style.AppTheme2) ;
+//        TypedValue typedValue = new TypedValue();
+//        Resources.Theme theme = this.getTheme();
+//        theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+//        int color = typedValue.data;
+
+
+
+    }
 }

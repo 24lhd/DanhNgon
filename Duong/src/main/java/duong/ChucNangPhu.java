@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -91,4 +92,8 @@ public class ChucNangPhu {
             context.finish();
         }
     }
+    public static void showLog(String log) {
+        Log.e("faker",log);
+    }
+
 }

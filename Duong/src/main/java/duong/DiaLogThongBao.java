@@ -1,9 +1,10 @@
 package duong;
 
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,8 +13,18 @@ import android.widget.Button;
  */
 
 public class DiaLogThongBao {
-    public AlertDialog createDiaLogThongBao(Context context,String title,String msg
-            ,String nameBtnYes,String nameBtnNo,int colorBtn,View.OnClickListener yesListener){
+    private ProgressDialog progressDialog;
+    public void hideDialogLoad() {
+        progressDialog.dismiss();
+    }
+    public void showDialogLoad(Context context,String msg) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(msg);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+    public AlertDialog createDiaLogThongBao(Context context, String title, String msg
+            , String nameBtnYes, String nameBtnNo, int colorBtn, View.OnClickListener yesListener){
         AlertDialog.Builder turnOnLoactionDialog=new AlertDialog.Builder(context);
         turnOnLoactionDialog.setTitle(title);
         turnOnLoactionDialog.setMessage(msg);
@@ -41,22 +52,21 @@ public class DiaLogThongBao {
         no.setOnClickListener(noListener);
         return alertDialog;
     }
-    public AlertDialog createDiaLogView(Context context,View view,String title,String msg
-            ,String nameBtnYes,String nameBtnNo,int colorBtn,View.OnClickListener yesListener
-            ,View.OnClickListener noListener){
-        AlertDialog.Builder turnOnLoactionDialog=new AlertDialog.Builder(context);
+    public static android.support.v7.app.AlertDialog createDiaLogView(Context context, View view, String title
+            , String nameBtnYes, String nameBtnNo, int colorBtn, View.OnClickListener yesListener
+            , View.OnClickListener noListener){
+        android.support.v7.app.AlertDialog.Builder turnOnLoactionDialog=new android.support.v7.app.AlertDialog.Builder(context);
         turnOnLoactionDialog.setTitle(title);
-        turnOnLoactionDialog.setMessage(msg);
         turnOnLoactionDialog.setPositiveButton(nameBtnYes,null);
         turnOnLoactionDialog.setNeutralButton(nameBtnNo,null);
         turnOnLoactionDialog.setView(view);
-        AlertDialog alertDialog=turnOnLoactionDialog.create();
+        android.support.v7.app.AlertDialog alertDialog=turnOnLoactionDialog.create();
         Button yes=alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         Button no=alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
-        yes.setTextColor(colorBtn);
-        no.setTextColor(colorBtn);
-        yes.setOnClickListener(yesListener);
-        no.setOnClickListener(noListener);
+//        yes.setTextColor(colorBtn);
+//        no.setTextColor(colorBtn);
+//        yes.setOnClickListener(yesListener);
+//        no.setOnClickListener(noListener);
         return alertDialog;
     }
     public AlertDialog createDiaLogView(Context context,View view,String title,String msg

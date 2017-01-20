@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import duong.ChucNangPhu;
+
 /**
  * Created by d on 17/01/2017.
  */
@@ -17,8 +19,6 @@ public class DuongSQLite {
     public DuongSQLite() {
 
     }
-
-
     public void cloneDatabase() {
         database.close();
     }
@@ -29,7 +29,6 @@ public class DuongSQLite {
                         clum+
                 ");");
     }
-
     private SQLiteDatabase database;
 
     public SQLiteDatabase getDatabase() {
@@ -42,12 +41,16 @@ public class DuongSQLite {
     public void createOrOpenDataBases(Context context,String nameDatabases) {
         database=context.openOrCreateDatabase(nameDatabases+".sqlite",Context.MODE_APPEND,null);
     }
-
-    public void copyDataBase(Context context,String dataBaseName) throws IOException {
-        String outFileName = "/data/data/"+context.getPackageName()+"/databases/" + dataBaseName;
-        if (checkDataBase(outFileName)) return;
-        InputStream myInput = context.getAssets().open(dataBaseName);
-        OutputStream myOutput = new FileOutputStream(outFileName);
+    public void copyDataBase(Context context,String pathDB,String str) throws IOException {
+//        if (checkDataBase(pathDB)) deleteDataBase(pathDB);
+        ChucNangPhu.showLog("pathDB"+pathDB);
+        File file=new File(pathDB);
+        if (!file.exists()){
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+        InputStream myInput = context.getAssets().open(str);
+        OutputStream myOutput = new FileOutputStream(pathDB);
         byte[] buffer = new byte[1024];
         int length;
         while ((length = myInput.read(buffer))>0){
@@ -60,6 +63,13 @@ public class DuongSQLite {
     public boolean checkDataBase(String pathDatabase){
         try {
             return new File(pathDatabase).exists();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean deleteDataBase(String pathDatabase){
+        try {
+            return new File(pathDatabase).delete();
         } catch (Exception e) {
             return false;
         }

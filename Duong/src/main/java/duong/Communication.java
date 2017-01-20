@@ -14,7 +14,7 @@ public class Communication {
     public void showToast(Context context,String sms) {
         Toast.makeText(context,sms,Toast.LENGTH_SHORT).show();
     }
-    public void showToastCenter(Context context,String sms) {
+    public static void showToastCenter(Context context,String sms) {
         Toast toast = Toast.makeText(context,sms, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();

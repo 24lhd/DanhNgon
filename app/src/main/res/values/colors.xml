@@ -4,4 +4,58 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorFrey">#aae4e4e4</color>
+    <color name="md_white_1000">#ffffff</color>
+    <color name="md_blue_200">#6495c8</color>
+
+    <color name="A">#F44336</color>
+    <color name="B">#E91E63 </color>
+    <color name="C">#9C27B0</color>
+    <color name="D">#673AB7</color>
+    <color name="E">#3F51B5</color>
+
+    <color name="L">#2196F3</color>
+    <color name="M">#03A9F4</color>
+    <color name="O">#00BCD4</color>
+    <color name="P">#009688</color>
+    <color name="Q">#4CAF50</color>
+
+    <color name="X">#8BC34A</color>
+    <color name="Y">#CDDC39</color>
+    <color name="Z">#FFEB3B</color>
+    <color name="A2">#FFC107</color>
+    <color name="B2">#FF9800</color>
+
+    <color name="H2">#FF5722</color>
+    <color name="I2">#795548</color>
+    <color name="K2">#9E9E9E</color>
+    <color name="L2">#607D8B</color>
+    <color name="O2">#000000</color>
+    <array name="colors">
+        <item >@color/A</item>
+        <item >@color/B</item>
+        <item >@color/C</item>
+        <item >@color/D</item>
+        <item >@color/E</item>
+
+        <item >@color/L</item>
+        <item >@color/M</item>
+        <item >@color/O</item>
+        <item >@color/P</item>
+        <item >@color/Q</item>
+
+        <item >@color/X</item>
+        <item >@color/Y</item>
+        <item >@color/Z</item>
+        <item >@color/A2</item>
+        <item >@color/B2</item>
+
+        <item >@color/H2</item>
+        <item >@color/I2</item>
+        <item >@color/K2</item>
+        <item >@color/L2</item>
+        <item >@color/O2</item>
+
+    </array>
 </resources>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/margin_view"
+    android:layout_height="wrap_content">
+    <android.support.design.widget.TabLayout
+        android:layout_width="match_parent"
+        android:id="@+id/tab_ui_layout"
+        android:layout_height="wrap_content">
+    </android.support.design.widget.TabLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_view"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:useCompatPadding="false"
+            app:backgroundTint="@color/A"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/B"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:onClick="onSelectUI"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            app:backgroundTint="@color/C"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            app:backgroundTint="@color/D"
+            android:onClick="onSelectUI"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            android:onClick="onSelectUI"
+            app:backgroundTint="@color/E"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_view"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            app:fabSize="mini"
+            android:onClick="onSelectUI"
+            app:backgroundTint="@color/L"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/M"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/O"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/P"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:onClick="onSelectUI"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            app:backgroundTint="@color/Q"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_view"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/X"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/Y"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/Z"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            android:onClick="onSelectUI"
+            app:fabSize="mini"
+            app:backgroundTint="@color/A2"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            android:onClick="onSelectUI"
+            app:backgroundTint="@color/B2"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_view"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:onClick="onSelectUI"
+            app:elevation="0dp"
+            app:fabSize="mini"
+            app:backgroundTint="@color/H2"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            android:onClick="onSelectUI"
+            app:backgroundTint="@color/I2"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            android:onClick="onSelectUI"
+            app:backgroundTint="@color/K2"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:onClick="onSelectUI"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            app:backgroundTint="@color/L2"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:elevation="0dp"
+            android:onClick="onSelectUI"
+            android:layout_marginLeft="@dimen/margin_view"
+            app:fabSize="mini"
+            app:backgroundTint="@color/O2"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
