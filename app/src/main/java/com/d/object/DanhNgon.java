@@ -7,6 +7,15 @@ import java.io.Serializable;
  */
 
 public class DanhNgon implements Serializable{
+    public DanhNgon(String stt, String content, String author, String category, String favorite) {
+        this.stt = stt;
+        this.content = content;
+        this.author = author;
+        this.category = category;
+        this.favorite = favorite;
+    }
+
+    private String stt;
     private String content;
     private String author;
     private String category;
@@ -54,11 +63,11 @@ public class DanhNgon implements Serializable{
         this.favorite = favorite;
     }
 
-    public DanhNgon(String content, String author, String category, String favorite) {
+    public String getStt() {
+        return stt;
+    }
 
-        this.content = content;
-        this.author = author;
-        this.category = category;
-        this.favorite = favorite;
+    public void setStt(String stt) {
+        this.stt = stt;
     }
 }

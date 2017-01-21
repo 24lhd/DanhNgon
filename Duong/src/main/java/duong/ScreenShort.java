@@ -27,7 +27,7 @@ public class ScreenShort {
         File file;
         bytearrayoutputstream = new ByteArrayOutputStream();
         FileOutputStream fileoutputstream;
-        View view=viewInput.getRootView();
+        View view=viewInput;
         view.setDrawingCacheEnabled(true);
         bitmap = view.getDrawingCache();
         bitmap.compress(Bitmap.CompressFormat.PNG, 60, bytearrayoutputstream);

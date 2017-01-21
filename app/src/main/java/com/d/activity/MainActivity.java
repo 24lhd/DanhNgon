@@ -39,6 +39,7 @@ import duong.ChucNangPhu;
 import duong.Communication;
 import duong.DiaLogThongBao;
 
+import static com.d.danhngon.R.drawable.shape_no;
 import static com.d.database.DuLieu.PATH_DB;
 
 public class MainActivity extends AppCompatActivity implements
@@ -58,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements
     private FrameLayout frameLayout;
     private AppLog appLog;
     private Window window;
+
+    public int getColorApp() {
+        return colorApp;
+    }
+
+    private int colorApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements
         frameLayout= (FrameLayout) findViewById(R.id.frame_fm);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        colorApp=getResources().getColor(R.color.colorPrimary);
         fmDanhNgon=new FmDanhNgon();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -169,10 +177,15 @@ public class MainActivity extends AppCompatActivity implements
                 appLog.getValueByName(this,STATE_UI,"frameLayout"));
     }
 
+    public DuLieu getDuLieu() {
+        return duLieu;
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+
             drawer.closeDrawer(GravityCompat.START);
         } else
             ChucNangPhu.finishDoubleCick(this);
@@ -240,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                tab.getCustomView().setBackground(getResources().getDrawable(shape_no));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -260,11 +273,17 @@ public class MainActivity extends AppCompatActivity implements
         transaction.replace(R.id.frame_fm, fmDanhNgon);
         transaction.commit();
     }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
     public void onSelectUI(View v) {
         FloatingActionButton floatingActionButton= (FloatingActionButton) v;
         switch (tabUISelect){
             case 1:
                 toolbar.setBackgroundColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                 colorApp=floatingActionButton.getBackgroundTintList().getDefaultColor();
                 appLog.putValueByName(this,STATE_UI,"toolbar",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 break;
             case 2:
@@ -306,9 +325,11 @@ public class MainActivity extends AppCompatActivity implements
     private void setUI(String status, String bar, String tabs, String tabu, String bg) {
         if (!status.equals(""))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) window.setStatusBarColor(Integer.parseInt(status));
-        if (!bar.equals(""))
+        if (!bar.equals("")){
             toolbar.setBackgroundColor(Integer.parseInt(bar));
-                GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
+            colorApp=Integer.parseInt(bar);
+        }
+        GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
         if (!tabu.equals(""))
             shape_no.setColor(Integer.parseInt(tabu));
                 GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
@@ -327,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(shape_no));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }
             }
@@ -338,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(shape_no));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }
             }

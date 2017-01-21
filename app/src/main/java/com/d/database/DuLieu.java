@@ -51,6 +51,34 @@ public class DuLieu {
            closeDatabases();
         return id;
     }
+    public int updateDanhNgonUnfarvorite(DanhNgon danhNgon) {
+        int result;
+        openDatabases();
+        ContentValues values=new ContentValues();
+        String [] str={danhNgon.getStt()};
+        values.put("stt",danhNgon.getStt());
+        values.put("category",danhNgon.getCategory());
+        values.put("author",danhNgon.getAuthor());
+        values.put("content",danhNgon.getContent());
+        values.put("favorite","0");
+        result=duongSQLite.getDatabase().update("danhngon",values,"stt=?",str);
+        closeDatabases();
+        return result;
+    }
+    public int updateDanhNgonFarvorite(DanhNgon danhNgon) {
+        int result;
+        openDatabases();
+        ContentValues values=new ContentValues();
+        String [] str={danhNgon.getStt()};
+        values.put("stt",danhNgon.getStt());
+        values.put("category",danhNgon.getCategory());
+        values.put("author",danhNgon.getAuthor());
+        values.put("content",danhNgon.getContent());
+        values.put("favorite","1");
+        result=duongSQLite.getDatabase().update("danhngon",values,"stt=?",str);
+        closeDatabases();
+        return result;
+    }
     public ArrayList<Category> getCategory() {
         ArrayList<Category> categories=new ArrayList<>();
         try {
@@ -70,6 +98,35 @@ public class DuLieu {
             return null;
         }
     }
+    public ArrayList<DanhNgon> getDanhNgonFavorite() {
+        ArrayList<DanhNgon> danhNgons=new ArrayList<>();
+        try {
+            String [] str={"1"};
+            openDatabases();
+            Cursor cursor=duongSQLite.getDatabase().query("danhngon",null,"favorite=?",str,null,null,null);
+            cursor.getCount();// tra ve so luong ban ghi no ghi dc
+            cursor.getColumnNames();// 1 mang cac cot
+            cursor.moveToFirst(); // di chuyển con trỏ đến dòng đầu tiền trong bảng
+            int istt=cursor.getColumnIndex("stt");
+            int icontent=cursor.getColumnIndex("content");
+            int iauthor=cursor.getColumnIndex("author");
+            int icategory=cursor.getColumnIndex("category");
+            int ifavorite=cursor.getColumnIndex("favorite");
+            while (!cursor.isAfterLast()){
+                DanhNgon danhNgon=new DanhNgon(cursor.getString(istt),cursor.getString(icontent),
+                        cursor.getString(iauthor),
+                        cursor.getString(icategory),
+                        cursor.getString(ifavorite));
+                danhNgons.add(danhNgon);
+                cursor.moveToNext();
+            }
+            closeDatabases();
+            return danhNgons ;
+        }catch (CursorIndexOutOfBoundsException e){
+            ChucNangPhu.showLog("CursorIndexOutOfBoundsException");
+            return null;
+        }
+    }
     public ArrayList<DanhNgon> getDanhNgon() {
         ArrayList<DanhNgon> danhNgons=new ArrayList<>();
         try {
@@ -78,12 +135,13 @@ public class DuLieu {
             cursor.getCount();// tra ve so luong ban ghi no ghi dc
             cursor.getColumnNames();// 1 mang cac cot
             cursor.moveToFirst(); // di chuyển con trỏ đến dòng đầu tiền trong bảng
+            int istt=cursor.getColumnIndex("stt");
             int icontent=cursor.getColumnIndex("content");
             int iauthor=cursor.getColumnIndex("author");
             int icategory=cursor.getColumnIndex("category");
             int ifavorite=cursor.getColumnIndex("favorite");
             while (!cursor.isAfterLast()){
-                DanhNgon danhNgon=new DanhNgon(cursor.getString(icontent),
+                DanhNgon danhNgon=new DanhNgon(cursor.getString(istt),cursor.getString(icontent),
                         cursor.getString(iauthor),
                         cursor.getString(icategory),
                         cursor.getString(ifavorite));
