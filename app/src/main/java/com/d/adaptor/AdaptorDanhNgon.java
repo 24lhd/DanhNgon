@@ -90,14 +90,14 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                 TextView tvContent= (TextView) view.findViewById(R.id.tv_content);
                 TextView tvAuthor= (TextView) view.findViewById(R.id.tv_author);
                 ImageView img= (ImageView) view.findViewById(R.id.im_bn_dn);
-
                 tvContent.setText(danhNgon.getContent());
                 tvAuthor.setText("~ "+danhNgon.getAuthor()+" ~");
                 Glide.with(activity).load(draw[random.nextInt(draw.length-1)]).into(img);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 //                    Picasso.with(activity).load(draw[random.nextInt(draw.length-1)]).into(img);
-//
-                alertDialog=DiaLogThongBao.createDiaLogCustemView(activity, view,null, "Chia sẻ", "Yêu thích", activity.getColorApp(), new View.OnClickListener() {
+                String favorite="Yêu thích";
+                if (danhNgon.getFavorite().contains("1")) favorite="Bỏ thích";
+                alertDialog=DiaLogThongBao.createDiaLogCustemView(activity, view,null, "Chia sẻ ảnh","Gim thẻ", favorite, activity.getColorApp(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ScreenShort screenShort=new ScreenShort();
@@ -106,8 +106,15 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                 },new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.getDuLieu().updateDanhNgonFarvorite(danhNgon);
+                        if (danhNgon.getFavorite().contains("1")) activity.getDuLieu().updateDanhNgonUnfarvorite(danhNgon);
+                        else activity.getDuLieu().updateDanhNgonFarvorite(danhNgon);
+                        notifyDataSetChanged();
                         alertDialog.dismiss();
+
+                    }
+                },new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
                     }
                 });

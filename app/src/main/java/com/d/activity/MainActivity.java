@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.d.danhngon.R;
 import com.d.database.DuLieu;
 import com.d.fragment.FmDanhNgon;
+import com.d.fragment.FmRecycleView;
 import com.d.object.Category;
 import com.d.object.DanhNgon;
 import com.d.task.TaskGetCategory;
@@ -41,6 +42,7 @@ import duong.DiaLogThongBao;
 
 import static com.d.danhngon.R.drawable.shape_no;
 import static com.d.database.DuLieu.PATH_DB;
+import static com.d.fragment.FmDanhNgon.ARG_SECTION_NUMBER;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener  {
@@ -77,10 +79,8 @@ public class MainActivity extends AppCompatActivity implements
         duLieu = new DuLieu(this);
         try {
                 if (duLieu.checkDB()){
-                    ChucNangPhu.showLog("if "+duLieu.checkDB());
                     startGetCategory();
                 }else {
-                    ChucNangPhu.showLog("else");
                     duLieu.getDuongSQLite().copyDataBase(this, PATH_DB,"danhngon_db.sqlite");
                     initData();
                 }
@@ -198,12 +198,21 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.danh_ngon) {
           setViewDanhNgon();
         } else if (id == R.id.chia_se) {
-            initData();
+
         } else if (id == R.id.more_app) {
 
         }else if (id == R.id.thay_doi_ui) {
             showDialogSetUI();
-           }
+        }else if (id == R.id.yeu_thich) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            FmRecycleView fmRecycleView=new FmRecycleView();
+            Bundle args = new Bundle();
+            args.putSerializable(ARG_SECTION_NUMBER, categories.get(0));
+            args.putSerializable(MainActivity.LIST_DATA,duLieu.getDanhNgonFavorites());
+            fmRecycleView.setArguments(args);
+            transaction.replace(R.id.frame_fm, fmRecycleView);
+            transaction.commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

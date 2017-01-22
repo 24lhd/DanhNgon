@@ -98,22 +98,23 @@ public class DuLieu {
             return null;
         }
     }
-    public ArrayList<DanhNgon> getDanhNgonFavorite() {
+    public ArrayList<DanhNgon> getDanhNgonFavorites() {
         ArrayList<DanhNgon> danhNgons=new ArrayList<>();
         try {
-            String [] str={"1"};
+            String s[]={"1"};
             openDatabases();
-            Cursor cursor=duongSQLite.getDatabase().query("danhngon",null,"favorite=?",str,null,null,null);
-            cursor.getCount();// tra ve so luong ban ghi no ghi dc
-            cursor.getColumnNames();// 1 mang cac cot
-            cursor.moveToFirst(); // di chuyển con trỏ đến dòng đầu tiền trong bảng
+            Cursor cursor=duongSQLite.getDatabase().query("danhngon",null,"favorite = ?",s,null,null,null);
+//            Cursor cursor=duongSQLite.getDatabase().query("danhngon",null,null,null,null,null,null);
+            cursor.moveToFirst();
             int istt=cursor.getColumnIndex("stt");
             int icontent=cursor.getColumnIndex("content");
             int iauthor=cursor.getColumnIndex("author");
             int icategory=cursor.getColumnIndex("category");
             int ifavorite=cursor.getColumnIndex("favorite");
             while (!cursor.isAfterLast()){
-                DanhNgon danhNgon=new DanhNgon(cursor.getString(istt),cursor.getString(icontent),
+                DanhNgon danhNgon=new DanhNgon(
+                        cursor.getString(istt),
+                        cursor.getString(icontent),
                         cursor.getString(iauthor),
                         cursor.getString(icategory),
                         cursor.getString(ifavorite));
@@ -172,7 +173,6 @@ public class DuLieu {
     public void deleteDThiLop(String maLop) {
         openDatabases();
         String []s={maLop};
-//        database.delete("dthilop","maLop=?",s);
         closeDatabases();
     }
     private void closeDatabases() {

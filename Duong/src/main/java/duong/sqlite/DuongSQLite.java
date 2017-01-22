@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import duong.ChucNangPhu;
-
 /**
  * Created by d on 17/01/2017.
  */
@@ -43,21 +41,21 @@ public class DuongSQLite {
     }
     public void copyDataBase(Context context,String pathDB,String str) throws IOException {
 //        if (checkDataBase(pathDB)) deleteDataBase(pathDB);
-        ChucNangPhu.showLog("pathDB"+pathDB);
         File file=new File(pathDB);
         if (!file.exists()){
             file.getParentFile().mkdirs();
             file.createNewFile();
+            InputStream myInput = context.getAssets().open(str);
+            OutputStream myOutput = new FileOutputStream(pathDB);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = myInput.read(buffer))>0){
+                myOutput.write(buffer, 0, length);
+            }
+            myOutput.close();
+            myInput.close();
         }
-        InputStream myInput = context.getAssets().open(str);
-        OutputStream myOutput = new FileOutputStream(pathDB);
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = myInput.read(buffer))>0){
-            myOutput.write(buffer, 0, length);
-        }
-        myOutput.close();
-        myInput.close();
+
 
     }
     public boolean checkDataBase(String pathDatabase){
