@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/shape_yes" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/shape_no"></item>
+    <item android:drawable="@drawable/tab_select" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/tab_unselect"></item>
 </selector>

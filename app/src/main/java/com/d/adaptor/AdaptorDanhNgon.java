@@ -85,6 +85,7 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
         danhNgonHover.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 LayoutInflater layoutInflater=LayoutInflater.from(activity);
                 view= (View) layoutInflater.inflate(R.layout.view_danh_ngon,null);
                 TextView tvContent= (TextView) view.findViewById(R.id.tv_content);
@@ -122,9 +123,11 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
             }
         });
 
-
     }
-    public int [] draw={
+
+
+
+    public static int [] draw={
             R.drawable.a001,
             R.drawable.a002,
             R.drawable.a003,

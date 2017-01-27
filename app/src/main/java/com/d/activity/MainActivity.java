@@ -17,13 +17,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.d.adaptor.AdaptorDanhNgon;
 import com.d.danhngon.R;
 import com.d.database.DuLieu;
 import com.d.fragment.FmDanhNgon;
@@ -34,13 +38,15 @@ import com.d.task.TaskGetCategory;
 import com.d.task.TaskGetDanhNgon;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import duong.AppLog;
 import duong.ChucNangPhu;
 import duong.Communication;
 import duong.DiaLogThongBao;
 
-import static com.d.danhngon.R.drawable.shape_no;
+import static com.d.danhngon.R.drawable.tab_select;
+import static com.d.danhngon.R.drawable.tab_unselect;
 import static com.d.database.DuLieu.PATH_DB;
 import static com.d.fragment.FmDanhNgon.ARG_SECTION_NUMBER;
 
@@ -62,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements
     private AppLog appLog;
     private Window window;
 
+    private ImageView headIm;
+    private TextView headContent;
+    private TextView headAuthor;
     public int getColorApp() {
         return colorApp;
     }
@@ -163,17 +172,41 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         colorApp=getResources().getColor(R.color.colorPrimary);
         fmDanhNgon=new FmDanhNgon();
+
+        headIm= (ImageView) findViewById(R.id.header_im_bn_dn);
+        headContent= (TextView) findViewById(R.id.header_tv_content);
+        headAuthor= (TextView) findViewById(R.id.header_tv_author);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+//                getRanRomDanhNgon(headContent,headAuthor,headIm);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                getRanRomDanhNgon(headContent,headAuthor,headIm);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+//                getRanRomDanhNgon(headContent,headAuthor,headIm);
+            }
+        });
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setUI(appLog.getValueByName(this,STATE_UI,"StatusBar"),
                 appLog.getValueByName(this,STATE_UI,"toolbar"),
-                appLog.getValueByName(this,STATE_UI,"shape_yes"),
-                appLog.getValueByName(this,STATE_UI,"shape_no"),
+                appLog.getValueByName(this,STATE_UI,"tab_select"),
+                appLog.getValueByName(this,STATE_UI,"tab_unselect.xml"),
                 appLog.getValueByName(this,STATE_UI,"frameLayout"));
     }
 
@@ -195,6 +228,8 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         toolbar.setTitle(item.getTitle());
+
+//            getRanRomDanhNgon(headContent,headAuthor,headIm);
         if (id == R.id.danh_ngon) {
           setViewDanhNgon();
         } else if (id == R.id.chia_se) {
@@ -257,17 +292,17 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabUISelect=tab.getPosition();
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(shape_no));
+                tab.getCustomView().setBackground(getResources().getDrawable(tab_unselect));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
             }
         });
         tabUI.getTabAt(0).select();
@@ -276,13 +311,42 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setViewDanhNgon() {
+
+//        toolbar.removeAllViews();
+//        toolbar.inflateMenu(R.menu.toolbar_menu);
+//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                return false;
+//            }
+//        });
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fmDanhNgon=new FmDanhNgon();
+        getRanRomDanhNgon(headContent,headAuthor,headIm);
         transaction.replace(R.id.frame_fm, fmDanhNgon);
         transaction.commit();
     }
-
+    public void getRanRomDanhNgon(TextView tvContent,TextView tvAuthor,ImageView image){
+        Random random=new Random();
+        Glide.with(this).load(AdaptorDanhNgon.draw[random.nextInt(AdaptorDanhNgon.draw.length-1)]).into(image);
+        DanhNgon danhNgonRd=danhNgons.get(random.nextInt(danhNgons.size()-1));
+        tvContent.setText(danhNgonRd.getContent());
+        tvAuthor.setText("~ "+danhNgonRd.getAuthor()+" ~");
+    }
     public Toolbar getToolbar() {
         return toolbar;
     }
@@ -296,15 +360,15 @@ public class MainActivity extends AppCompatActivity implements
                 appLog.putValueByName(this,STATE_UI,"toolbar",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 break;
             case 2:
-                GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
-                shape_no.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"shape_no",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                GradientDrawable tabUnselect= (GradientDrawable) getResources().getDrawable(tab_unselect);
+                tabUnselect.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                appLog.putValueByName(this,STATE_UI,"tab_unselect.xml",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 loadColorTab();
                 break;
             case 3:
-                GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
-                shape_yes.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"shape_yes",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                GradientDrawable tabSelect= (GradientDrawable) getResources().getDrawable(tab_select);
+                tabSelect.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                appLog.putValueByName(this,STATE_UI,"tab_select",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 loadColorTab();
                 break;
             case 4:
@@ -338,14 +402,17 @@ public class MainActivity extends AppCompatActivity implements
             toolbar.setBackgroundColor(Integer.parseInt(bar));
             colorApp=Integer.parseInt(bar);
         }
-        GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
-        if (!tabu.equals(""))
-            shape_no.setColor(Integer.parseInt(tabu));
-                GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
-        if (!tabs.equals(""))
-                shape_yes.setColor(Integer.parseInt(tabs));
+        if (!tabu.equals("")){
+            GradientDrawable tabUnselect= (GradientDrawable) getResources().getDrawable(tab_unselect);
+            tabUnselect.setColor(Integer.parseInt(tabu));
+        }
+        if (!tabs.equals("")){
+            GradientDrawable tabSelect= (GradientDrawable) getResources().getDrawable(tab_select);
+            tabSelect.setColor(Integer.parseInt(tabs));
+        }
         if (!bg.equals(""))
                 frameLayout.setBackgroundColor(Integer.parseInt(bg));
+
     }
 
     private void loadColorTab() {
@@ -353,22 +420,22 @@ public class MainActivity extends AppCompatActivity implements
             for (int i = 0; i < tabUI.getTabCount(); i++) {
                 if (tabUI.getTabAt(i).isSelected()){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(shape_no));
+                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }
             }
             for (int i = 0; i < fmDanhNgon.getTabLayout().getTabCount(); i++) {
                 if (fmDanhNgon.getTabLayout().getTabAt(i).isSelected()){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(shape_no));
+                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }
             }

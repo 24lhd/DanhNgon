@@ -69,24 +69,23 @@ public class FmDanhNgon extends Fragment {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_no));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
             }
         });
         tabLayout.getTabAt(0).select();
 
         mViewPager.setCurrentItem(0);
     }
-
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);

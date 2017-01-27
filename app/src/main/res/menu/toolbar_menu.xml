@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Nhảy"
+        android:id="@+id/menu_nhay"
+        android:icon="@android:drawable/ic_menu_set_as"
+        app:showAsAction="always"
+        tools:ignore="AppCompatResource"></item>
+    <item android:title="Thêm"
+        android:id="@+id/menu_them"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="always"
+        tools:ignore="AppCompatResource"></item>
+</menu>

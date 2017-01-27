@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/side_nav_bar"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
+    android:id="@+id/view_dn"
+    android:layout_height="@dimen/nav_header_height">
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
-    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:src="@drawable/a2"
+        android:scaleType="centerCrop"
+        android:id="@+id/header_im_bn_dn"
+        android:layout_height="@dimen/nav_header_height" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_alignBottom="@id/header_im_bn_dn"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/header_tv_content"
+                android:textStyle="bold"
+                android:shadowColor="@color/colorBlack"
+                android:shadowDx="5"
+                android:text="a"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_view"
+                android:layout_marginRight="@dimen/margin_view"
+                android:shadowRadius="5"
+                android:layout_height="wrap_content"
+                android:shadowDy="5"
+                android:textColor="@color/colorWhite"
+                style="@style/Base.TextAppearance.AppCompat.Medium">
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/header_tv_author"
+                android:gravity="right"
+                android:textStyle="bold"
+                android:layout_marginRight="@dimen/margin_view"
+                android:layout_marginBottom="@dimen/margin_item"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
+                android:text="b"
+                android:textColor="@color/colorAccent"
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+    </ScrollView>
 
-</LinearLayout>
+
+
+</RelativeLayout>
