@@ -2,7 +2,7 @@
 <TextView android:layout_width="match_parent"
     android:id="@+id/tv_tab"
     android:padding="20px"
-    android:background="@drawable/shape_no"
+    android:background="@drawable/tab_unselect"
     style="@style/TextAppearance.AppCompat.Body2"
     android:textColor="@color/colorWhite"
     android:gravity="center"
