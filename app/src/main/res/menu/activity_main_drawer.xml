@@ -24,7 +24,7 @@
         <item
             android:id="@+id/chia_se"
             android:icon="@drawable/ic_menu_share"
-            android:title="Chia sẻ" />
+            android:title="Chia sẻ với bạn bè" />
         <item
             android:id="@+id/more_app"
             android:icon="@android:drawable/sym_def_app_icon"

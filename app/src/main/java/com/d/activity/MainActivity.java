@@ -2,8 +2,11 @@ package com.d.activity;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,23 +20,29 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.d.adaptor.AdaptorDanhNgon;
 import com.d.danhngon.R;
 import com.d.database.DuLieu;
 import com.d.fragment.FmDanhNgon;
 import com.d.fragment.FmRecycleView;
 import com.d.object.Category;
 import com.d.object.DanhNgon;
+import com.d.service.FlyBitch;
 import com.d.task.TaskGetCategory;
 import com.d.task.TaskGetDanhNgon;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import duong.AppLog;
 import duong.ChucNangPhu;
@@ -62,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements
     private AppLog appLog;
     private Window window;
 
+    private ImageView headIm;
+    private TextView headContent;
+    private TextView headAuthor;
     public int getColorApp() {
         return colorApp;
     }
@@ -73,7 +85,18 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         showDialogLoad(this, "Đang khởi tạo dữ liệu...");
+        Intent intent=new Intent(this,FlyBitch.class);
+        startService(intent);
         initData();
+    }
+    @Override
+    protected void onResume() {
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle != null && bundle.getString("LAUNCH").equals("YES")) {
+            startService(new Intent(MainActivity.this, FlyBitch.class));
+        }
+        super.onResume();
     }
     private void initData() {
         duLieu = new DuLieu(this);
@@ -153,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initView() {
+
         appLog=new AppLog();
         appLog.openLog(this,STATE_UI);
          window = this.getWindow();
@@ -163,7 +187,31 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         colorApp=getResources().getColor(R.color.colorPrimary);
         fmDanhNgon=new FmDanhNgon();
+        headIm= (ImageView) findViewById(R.id.header_im_bn_dn);
+        headContent= (TextView) findViewById(R.id.header_tv_content);
+        headAuthor= (TextView) findViewById(R.id.header_tv_author);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                getRanRomDanhNgon(headContent,headAuthor,headIm);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -195,12 +243,17 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         toolbar.setTitle(item.getTitle());
+        getRanRomDanhNgon(headContent,headAuthor,headIm);
         if (id == R.id.danh_ngon) {
           setViewDanhNgon();
+        } else if (id == R.id.cai_dat) {
+
+        } else if (id == R.id.danh_gia) {
+            danhGiaApp();
         } else if (id == R.id.chia_se) {
-
-        } else if (id == R.id.more_app) {
-
+            chiaSeApp();
+        }else if (id == R.id.more_app) {
+            moreApp();
         }else if (id == R.id.thay_doi_ui) {
             showDialogSetUI();
         }else if (id == R.id.yeu_thich) {
@@ -216,6 +269,46 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void moreApp() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://search?q=pub:Duong Le Hong"));
+            startActivity(intent);
+        }catch (Exception e){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://play.google.com/store/search?q=pub:Duong Le Hong"));
+            startActivity(intent);
+        }
+    }
+
+    private void chiaSeApp() {
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "Link tải phần mềm Danh Ng ");
+            String sAux = "Ứng dụng Danh Ng \n";
+            sAux = sAux + "https://play.google.com/store/apps/details?id=com.ken.hauiclass";
+            i.putExtra(Intent.EXTRA_TEXT, sAux);
+            startActivity(Intent.createChooser(i, "choose one"));
+        } catch(Exception e) {}
+    }
+
+    private void danhGiaApp() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
     }
 
     private void showDialogSetUI() {
@@ -276,13 +369,33 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setViewDanhNgon() {
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fmDanhNgon=new FmDanhNgon();
+        getRanRomDanhNgon(headContent,headAuthor,headIm);
         transaction.replace(R.id.frame_fm, fmDanhNgon);
         transaction.commit();
     }
-
+    public void getRanRomDanhNgon(TextView tvContent,TextView tvAuthor,ImageView image){
+        Random random=new Random();
+        Glide.with(this).load(AdaptorDanhNgon.draw[random.nextInt(AdaptorDanhNgon.draw.length-1)]).into(image);
+        DanhNgon danhNgonRd=danhNgons.get(random.nextInt(danhNgons.size()-1));
+        tvContent.setText(danhNgonRd.getContent());
+        tvAuthor.setText("~ "+danhNgonRd.getAuthor()+" ~");
+    }
     public Toolbar getToolbar() {
         return toolbar;
     }
@@ -312,6 +425,9 @@ public class MainActivity extends AppCompatActivity implements
                 appLog.putValueByName(this,STATE_UI,"frameLayout",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 break;
             default:
+//                getWindow().getDecorView().setSystemUiVisibility(
+//                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     window.setStatusBarColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
                     appLog.putValueByName(this,STATE_UI,"StatusBar",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
@@ -332,18 +448,29 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void setUI(String status, String bar, String tabs, String tabu, String bg) {
-        if (!status.equals(""))
+//        getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        if (!status.equals("")){
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) window.setStatusBarColor(Integer.parseInt(status));
+        }
         if (!bar.equals("")){
             toolbar.setBackgroundColor(Integer.parseInt(bar));
             colorApp=Integer.parseInt(bar);
         }
-        GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
-        if (!tabu.equals(""))
+        if (!tabu.equals("")){
+            ChucNangPhu.showLog(""+tabu);
+            GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
             shape_no.setColor(Integer.parseInt(tabu));
-                GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
-        if (!tabs.equals(""))
-                shape_yes.setColor(Integer.parseInt(tabs));
+        }
+
+        if (!tabs.equals("")){
+            ChucNangPhu.showLog(""+tabs);
+            GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
+            shape_yes.setColor(Integer.parseInt(tabs));
+            ChucNangPhu.showLog(""+tabs);
+        }
         if (!bg.equals(""))
                 frameLayout.setBackgroundColor(Integer.parseInt(bg));
     }

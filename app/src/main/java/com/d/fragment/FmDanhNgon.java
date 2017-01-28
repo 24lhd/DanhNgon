@@ -86,7 +86,6 @@ public class FmDanhNgon extends Fragment {
 
         mViewPager.setCurrentItem(0);
     }
-
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         public SectionsPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
