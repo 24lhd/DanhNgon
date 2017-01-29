@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.d.adaptor.AdaptorDanhNgon;
 import com.d.danhngon.R;
 import com.d.database.DuLieu;
+import com.d.fragment.FmCaiDat;
 import com.d.fragment.FmDanhNgon;
 import com.d.fragment.FmRecycleView;
 import com.d.object.Category;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView headIm;
     private TextView headContent;
     private TextView headAuthor;
+    private FmCaiDat fmCaiDat;
+
     public int getColorApp() {
         return colorApp;
     }
@@ -247,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.danh_ngon) {
           setViewDanhNgon();
         } else if (id == R.id.cai_dat) {
-
+            caiDat();
         } else if (id == R.id.danh_gia) {
             danhGiaApp();
         } else if (id == R.id.chia_se) {
@@ -269,6 +272,14 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void caiDat() {
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+         fmCaiDat=new FmCaiDat();
+        getRanRomDanhNgon(headContent,headAuthor,headIm);
+        transaction.replace(R.id.frame_fm, fmCaiDat);
+        transaction.commit();
     }
 
     private void moreApp() {

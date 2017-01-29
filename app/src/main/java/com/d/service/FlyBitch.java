@@ -82,12 +82,9 @@ public class FlyBitch extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		try{
-			if(myBroadcastOnScrern!=null)
-				unregisterReceiver(myBroadcastOnScrern);
-		}catch(Exception e)
-		{
-
-		}
+//		try{
+//			if(myBroadcastOnScrern!=null)
+//				unregisterReceiver(myBroadcastOnScrern);
+//		}catch(Exception e) {}
 	}
 }

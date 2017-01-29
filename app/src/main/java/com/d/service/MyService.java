@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.d.activity.MainActivity;
 import com.d.danhngon.R;
 
@@ -36,6 +35,7 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        showNotify();
         return START_NOT_STICKY;
     }
     private WindowManager windowManager;
@@ -44,12 +44,9 @@ public class MyService extends Service {
 
     @Override
     public void onCreate() {
-        showNotify();
-
+        showWindow();
         super.onCreate();
-
     }
-
     private void showNotify() {
         final Intent emptyIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, NOT_USED, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -61,6 +58,7 @@ public class MyService extends Service {
         mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10, mBuilder.build());
+//        stopSelf();
 
     }
 
@@ -91,7 +89,6 @@ public class MyService extends Service {
         });
         btYeuThich.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View v) {
 
             }
@@ -103,7 +100,6 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (view != null) windowManager.removeView(view);
     }
 }
