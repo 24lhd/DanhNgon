@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.media.RingtoneManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
@@ -17,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.d.activity.MainActivity;
 import com.d.danhngon.R;
 
@@ -54,8 +54,9 @@ public class MyService extends Service {
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_camera)
                         .setContentTitle("Danh Ngôn Sống Mỗi Ngày")
+                        .setContentIntent(pendingIntent).setColor(getResources().getColor(R.color.colorPrimary))
                         .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText("content \n author")).addAction (android.R.drawable.btn_star,"Yêu thích", pendingIntent);
-        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+//        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(10, mBuilder.build());
 //        stopSelf();
