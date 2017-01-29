@@ -28,12 +28,13 @@
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/sw_window"
                     style="@style/TextAppearance.AppCompat.Widget.Switch"
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
-                android:text="@string/window_op"
+                android:text="@string/window_op_des"
                 android:layout_below="@id/fm_window"
                 android:id="@+id/tv_des_window"
                 android:layout_height="wrap_content" />
@@ -45,7 +46,6 @@
         android:padding="@dimen/margin_item"
         android:layout_below="@id/tv_des_window"
         android:layout_margin ="@dimen/margin_card"
-
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -58,19 +58,20 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="@string/window_op"
+                    android:text="@string/notify_op"
                     android:layout_weight="1"
                     style="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_height="wrap_content" />
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/sw_notify"
                     style="@style/TextAppearance.AppCompat.Widget.Switch"
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
-                android:text="k.fg"
+                android:text="@string/notify_op_des"
                 android:layout_below="@id/fm_notify"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

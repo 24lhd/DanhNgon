@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String LIST_DATA = "list_data";
     public static final String THIS = "this";
     public static final String STATE_UI = "state_ui";
+    public static String DATA="data";
     private Toolbar toolbar;
     private ArrayList<Category> categories;
     private ArrayList<DanhNgon> danhNgons;
@@ -88,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         showDialogLoad(this, "Đang khởi tạo dữ liệu...");
         Intent intent=new Intent(this,FlyBitch.class);
+//        Bundle bundle=new Bundle();
+//        bundle.putSerializable(MainActivity.LIST_DATA,danhNgons);
+//        intent.putExtras(bundle);
         startService(intent);
 
         initData();
