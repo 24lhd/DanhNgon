@@ -49,7 +49,6 @@ import duong.ChucNangPhu;
 import duong.Communication;
 import duong.DiaLogThongBao;
 
-import static com.d.danhngon.R.drawable.shape_no;
 import static com.d.database.DuLieu.PATH_DB;
 import static com.d.fragment.FmDanhNgon.ARG_SECTION_NUMBER;
 
@@ -87,17 +86,18 @@ public class MainActivity extends AppCompatActivity implements
         showDialogLoad(this, "Đang khởi tạo dữ liệu...");
         Intent intent=new Intent(this,FlyBitch.class);
         startService(intent);
+
         initData();
     }
-    @Override
-    protected void onResume() {
-        Bundle bundle = getIntent().getExtras();
-
-        if(bundle != null && bundle.getString("LAUNCH").equals("YES")) {
-            startService(new Intent(MainActivity.this, FlyBitch.class));
-        }
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        Bundle bundle = getIntent().getExtras();
+//
+//        if(bundle != null && bundle.getString("LAUNCH").equals("YES")) {
+//            startService(new Intent(MainActivity.this, FlyBitch.class));
+//        }
+//        super.onResume();
+//    }
     private void initData() {
         duLieu = new DuLieu(this);
         try {
@@ -220,8 +220,8 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         setUI(appLog.getValueByName(this,STATE_UI,"StatusBar"),
                 appLog.getValueByName(this,STATE_UI,"toolbar"),
-                appLog.getValueByName(this,STATE_UI,"shape_yes"),
-                appLog.getValueByName(this,STATE_UI,"shape_no"),
+                appLog.getValueByName(this,STATE_UI,"tab_selecter"),
+                appLog.getValueByName(this,STATE_UI,"tab_unselecter"),
                 appLog.getValueByName(this,STATE_UI,"frameLayout"));
     }
 
@@ -350,17 +350,17 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabUISelect=tab.getPosition();
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(shape_no));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
             }
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                tab.getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
             }
         });
         tabUI.getTabAt(0).select();
@@ -409,15 +409,15 @@ public class MainActivity extends AppCompatActivity implements
                 appLog.putValueByName(this,STATE_UI,"toolbar",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 break;
             case 2:
-                GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
-                shape_no.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"shape_no",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                GradientDrawable tab_unselecter= (GradientDrawable) getResources().getDrawable(R.drawable.tab_unselect);
+                tab_unselecter.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                appLog.putValueByName(this,STATE_UI,"tab_unselecter",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 loadColorTab();
                 break;
             case 3:
-                GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
-                shape_yes.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"shape_yes",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                GradientDrawable tab_selecter= (GradientDrawable) getResources().getDrawable(R.drawable.tab_select);
+                tab_selecter.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
+                appLog.putValueByName(this,STATE_UI,"tab_selecter",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
                 loadColorTab();
                 break;
             case 4:
@@ -461,14 +461,14 @@ public class MainActivity extends AppCompatActivity implements
         }
         if (!tabu.equals("")){
             ChucNangPhu.showLog(""+tabu);
-            GradientDrawable shape_no= (GradientDrawable) getResources().getDrawable(R.drawable.shape_no);
-            shape_no.setColor(Integer.parseInt(tabu));
+            GradientDrawable tab_unselecter= (GradientDrawable) getResources().getDrawable(R.drawable.tab_unselect);
+            tab_unselecter.setColor(Integer.parseInt(tabu));
         }
 
         if (!tabs.equals("")){
             ChucNangPhu.showLog(""+tabs);
-            GradientDrawable shape_yes= (GradientDrawable) getResources().getDrawable(R.drawable.shape_yes);
-            shape_yes.setColor(Integer.parseInt(tabs));
+            GradientDrawable tab_selecter= (GradientDrawable) getResources().getDrawable(R.drawable.tab_select);
+            tab_selecter.setColor(Integer.parseInt(tabs));
             ChucNangPhu.showLog(""+tabs);
         }
         if (!bg.equals(""))
@@ -480,22 +480,22 @@ public class MainActivity extends AppCompatActivity implements
             for (int i = 0; i < tabUI.getTabCount(); i++) {
                 if (tabUI.getTabAt(i).isSelected()){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(shape_no));
+                        tabUI.getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }
             }
             for (int i = 0; i < fmDanhNgon.getTabLayout().getTabCount(); i++) {
                 if (fmDanhNgon.getTabLayout().getTabAt(i).isSelected()){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.shape_yes));
+                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_select));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(shape_no));
+                        fmDanhNgon.getTabLayout().getTabAt(i).getCustomView().setBackground(getResources().getDrawable(R.drawable.tab_unselect));
                     else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 }
             }

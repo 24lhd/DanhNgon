@@ -1,18 +1,33 @@
 package com.d.service;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.media.RingtoneManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import duong.ChucNangPhu;
+import com.d.activity.MainActivity;
+import com.d.danhngon.R;
 
 /**
  * Created by d on 28/01/2017.
  */
 
 public class MyService extends Service {
+    private int NOT_USED=10;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -21,58 +36,74 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        ChucNangPhu.showLog("onStartCommand");
-        if (intent==null){
-            ChucNangPhu.showLog("null");
-//            WindowManager.LayoutParams p = new WindowManager.LayoutParams(
-//                    // Shrink the window to wrap the content rather than filling the screen
-//                    WindowManager.LayoutParams.WRAP_CONTENT,
-//                    WindowManager.LayoutParams.WRAP_CONTENT,
-//                    // Display it on top of other application windows, but only for the current user
-//                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-//                    // Don't let it grab the input focus
-//                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//                    // Make the underlying application window visible through any transparent parts
-//                    PixelFormat.TRANSLUCENT);
-//
-//            p.gravity = Gravity.TOP | Gravity.RIGHT;
-//            p.x = 0;
-//            p.y = 100;
-//            EditText editText=new EditText(this);
-//            WindowManager windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
-//            windowManager.addView(editText, p);
-            builder.setTitle("sssssssss");
-            builder.setMessage("Sssssssssssssss");
-            builder.show();
-            ChucNangPhu.showLog("sssssssssssssssss");
-        }
-
-
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
+    private WindowManager windowManager;
+    private View view;
+    private WindowManager.LayoutParams params;
 
     @Override
     public void onCreate() {
+        showNotify();
+
         super.onCreate();
-//        Toast.makeText(getBaseContext(),"onCreate", Toast.LENGTH_LONG).show();
-//        EditText editText=new EditText(this);
-//        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-//                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-//                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-//                PixelFormat.TRANSLUCENT);
-//        params.gravity = Gravity.RIGHT | Gravity.TOP;
-//        params.setTitle("Load Average");
-//        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-//        wm.addView(editText, params);
+
     }
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//
-//        // ATTENTION: GET THE X,Y OF EVENT FROM THE PARAMETER
-//        // THEN CHECK IF THAT IS INSIDE YOUR DESIRED AREA
-//
-//        Toast.makeText(this,"onTouchEvent", Toast.LENGTH_LONG).show();
-//        return true;
-//    }
+
+    private void showNotify() {
+        final Intent emptyIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOT_USED, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder mBuilder =
+                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_menu_camera)
+                        .setContentTitle("Danh Ngôn Sống Mỗi Ngày")
+                        .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText("content \n author")).addAction (android.R.drawable.btn_star,"Yêu thích", pendingIntent);
+        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(10, mBuilder.build());
+
+    }
+
+    private void showWindow() {
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+        params.gravity = Gravity.CENTER;
+//        params.x = 0;
+//        params.y = 100;
+        LayoutInflater inflater=LayoutInflater.from(this);
+        view=inflater.inflate(R.layout.card_window_danh_ngon,null);
+        TextView tvContent= (TextView) view.findViewById(R.id.tv_wd_content);
+        TextView tvAuthor= (TextView) view.findViewById(R.id.tv_wd_author);
+        ImageView img= (ImageView) view.findViewById(R.id.im_wd_bn_dn);
+        Button btYeuThich= (Button) view.findViewById(R.id.bt_wd_yeu_thich);
+        Button btAn= (Button) view.findViewById(R.id.bt_wd_an);
+        btAn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                windowManager.removeViewImmediate(view);
+                stopSelf();
+            }
+        });
+        btYeuThich.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            public void onClick(View v) {
+
+            }
+        });
+
+        windowManager.addView(view, params);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (view != null) windowManager.removeView(view);
+    }
 }
