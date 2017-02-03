@@ -92,6 +92,7 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                 TextView tvAuthor= (TextView) view.findViewById(R.id.tv_author);
                 ImageView img= (ImageView) view.findViewById(R.id.im_bn_dn);
                 tvContent.setText(danhNgon.getContent());
+                tvAuthor.setTextColor(activity.getColorApp());
                 tvAuthor.setText("~ "+danhNgon.getAuthor()+" ~");
                 Glide.with(activity).load(draw[random.nextInt(draw.length-1)]).into(img);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)

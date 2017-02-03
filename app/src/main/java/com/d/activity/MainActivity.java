@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         showDialogLoad(this, "Đang khởi tạo dữ liệu...");
         Intent intent=new Intent(this,FlyBitch.class);
+
 //        Bundle bundle=new Bundle();
 //        bundle.putSerializable(MainActivity.LIST_DATA,danhNgons);
 //        intent.putExtras(bundle);
@@ -107,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements
 //    }
     private void initData() {
         duLieu = new DuLieu(this);
+        DanhNgon danhNgon= (DanhNgon) getIntent().getSerializableExtra("like");
+        if (danhNgon instanceof DanhNgon){
+            ChucNangPhu.showLog("chay r");
+            duLieu.updateDanhNgonFarvorite(danhNgon);
+        }
         try {
                 if (duLieu.checkDB()){
                     startGetCategory();

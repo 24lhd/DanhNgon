@@ -61,14 +61,17 @@ public class MyService extends Service {
     private View view;
     private WindowManager.LayoutParams params;
     private void showNotify() {
-        final Intent emptyIntent = new Intent(this, MainActivity.class);
+         Intent intentLike = new Intent(this, MainActivity.class);
+        intentLike.putExtra("like",danhNgon);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOT_USED, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intentOpen = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOT_USED, intentLike, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentNull = PendingIntent.getActivity(this, NOT_USED, intentLike, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_camera)
                         .setContentTitle("Danh Ngôn Sống Mỗi Ngày")
-                        .setContentIntent(pendingIntent).setColor(getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(pendingIntentNull).setColor(getResources().getColor(R.color.colorPrimary))
                         .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(danhNgon.getContent()+" \n"+"~ "+danhNgon.getAuthor()+" ~"))
                         .addAction (android.R.drawable.btn_star,"Yêu thích", pendingIntent);
 //        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
