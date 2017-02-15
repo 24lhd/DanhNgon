@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Danh Ngôn</string>
+    <string name="app_name">Danh ngôn mỗi ngày</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -5,13 +5,13 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -23,24 +23,24 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.d.adaptor.AdaptorDanhNgon;
-import com.d.danhngon.R;
 import com.d.database.DuLieu;
 import com.d.fragment.FmCaiDat;
 import com.d.fragment.FmDanhNgon;
 import com.d.fragment.FmRecycleView;
 import com.d.object.Category;
 import com.d.object.DanhNgon;
-import com.d.service.FlyBitch;
 import com.d.task.TaskGetCategory;
 import com.d.task.TaskGetDanhNgon;
+import com.d.task.TaskGetImage;
+import com.lhd.danhngon.R;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,10 +55,10 @@ import static com.d.fragment.FmDanhNgon.ARG_SECTION_NUMBER;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener  {
-
     public static final String LIST_DATA = "list_data";
     public static final String THIS = "this";
     public static final String STATE_UI = "state_ui";
+    public static final String IMAGE = "image";
     public static String DATA="data";
     private Toolbar toolbar;
     private ArrayList<Category> categories;
@@ -70,62 +70,68 @@ public class MainActivity extends AppCompatActivity implements
     private FmDanhNgon fmDanhNgon;
     private FrameLayout frameLayout;
     private AppLog appLog;
-    private Window window;
-
     private ImageView headIm;
     private TextView headContent;
     private TextView headAuthor;
     private FmCaiDat fmCaiDat;
+    private ArrayList<String> images;
+    private DrawerLayout drawer;
 
     public int getColorApp() {
         return colorApp;
     }
-
     private int colorApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        showDialogLoad(this, "Đang khởi tạo dữ liệu...");
-        Intent intent=new Intent(this,FlyBitch.class);
+//        ImageView imageView=new ImageView(this);
+        setContentView(R.layout.layout_intro);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        RelativeLayout relativeLayout= (RelativeLayout) findViewById(R.id.fm_layout_intro);
+        appLog=new AppLog();
+        appLog.openLog(this,STATE_UI);
+        if (!appLog.getValueByName(this,STATE_UI,"StatusBar").equals(""))
+            relativeLayout.setBackgroundColor(Integer.parseInt(appLog.getValueByName(this,STATE_UI,"StatusBar")));
 
-//        Bundle bundle=new Bundle();
-//        bundle.putSerializable(MainActivity.LIST_DATA,danhNgons);
-//        intent.putExtras(bundle);
-        startService(intent);
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setContentView(R.layout.activity_main);
+                showDialogLoad(MainActivity.this, "Đang khởi tạo dữ liệu...");
+                initView();
+                initData();
+            }
+        }, 1000);
 
-        initData();
     }
-//    @Override
-//    protected void onResume() {
-//        Bundle bundle = getIntent().getExtras();
-//
-//        if(bundle != null && bundle.getString("LAUNCH").equals("YES")) {
-//            startService(new Intent(MainActivity.this, FlyBitch.class));
-//        }
-//        super.onResume();
-//    }
     private void initData() {
         duLieu = new DuLieu(this);
         DanhNgon danhNgon= (DanhNgon) getIntent().getSerializableExtra("like");
-        if (danhNgon instanceof DanhNgon){
-            ChucNangPhu.showLog("chay r");
-            duLieu.updateDanhNgonFarvorite(danhNgon);
-        }
+        if (danhNgon instanceof DanhNgon) duLieu.updateDanhNgonFarvorite(danhNgon);
         try {
                 if (duLieu.checkDB()){
+                    startImages();
                     startGetCategory();
-                }else {
+                }
+                else {
                     duLieu.getDuongSQLite().copyDataBase(this, PATH_DB,"danhngon_db.sqlite");
                     initData();
                 }
-            } catch (Exception e) {
-                ChucNangPhu.showLog("Exception");
-            }
-
+            } catch (Exception e) {}
     }
-        public void startGetCategory() {
+    public void startImages() {
+        Handler handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+               images=new ArrayList<>();
+                images= (ArrayList<String>) msg.obj;
+            }
+        };
+        TaskGetImage taskGetImage=new TaskGetImage(this,handler);
+        taskGetImage.execute();
+    }
+    public void startGetCategory() {
         Handler handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -147,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements
             public void handleMessage(Message msg) {
                 ArrayList<DanhNgon> danhNgons = (ArrayList<DanhNgon>) msg.obj;
                 if (danhNgons != null){
-                    initView();
+                    initViewContent();
                     hideDialogLoad();
                     setDanhNgons(danhNgons);
                     setViewDanhNgon();
@@ -159,6 +165,36 @@ public class MainActivity extends AppCompatActivity implements
         };
         TaskGetDanhNgon getDanhNgon = new TaskGetDanhNgon(this, handler);
         getDanhNgon.execute();
+    }
+
+    private void initViewContent() {
+        headIm= (ImageView) findViewById(R.id.header_im_bn_dn);
+        headContent= (TextView) findViewById(R.id.header_tv_content);
+        headAuthor= (TextView) findViewById(R.id.header_tv_author);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {}
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            }
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                getRanRomDanhNgon(headContent,headAuthor,headIm);
+            }
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
     }
 
     public void hideDialogLoad() {
@@ -189,46 +225,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initView() {
-
-        appLog=new AppLog();
-        appLog.openLog(this,STATE_UI);
-         window = this.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         frameLayout= (FrameLayout) findViewById(R.id.frame_fm);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         colorApp=getResources().getColor(R.color.colorPrimary);
         fmDanhNgon=new FmDanhNgon();
-        headIm= (ImageView) findViewById(R.id.header_im_bn_dn);
-        headContent= (TextView) findViewById(R.id.header_tv_content);
-        headAuthor= (TextView) findViewById(R.id.header_tv_author);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                getRanRomDanhNgon(headContent,headAuthor,headIm);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
-        });
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setUI(appLog.getValueByName(this,STATE_UI,"StatusBar"),
@@ -308,9 +312,9 @@ public class MainActivity extends AppCompatActivity implements
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_SUBJECT, "Link tải phần mềm Danh Ng ");
-            String sAux = "Ứng dụng Danh Ng \n";
-            sAux = sAux + "https://play.google.com/store/apps/details?id=com.ken.hauiclass";
+            i.putExtra(Intent.EXTRA_SUBJECT, "Link tải phần mềm Danh Ngôn");
+            String sAux = "Ứng dụng Danh Ngôn \n";
+            sAux = sAux + "https://play.google.com/store/apps/details?id=com.lhd.danhngon";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
         } catch(Exception e) {}
@@ -334,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void showDialogSetUI() {
         LayoutInflater layoutInflater=getLayoutInflater();
-        View view=layoutInflater.inflate(R.layout.layout_select_ui,null);
+        View view=layoutInflater.inflate(R.layout.layout_change_ui,null);
         tabUI= (TabLayout) view.findViewById(R.id.tab_ui_layout);
         tabUI.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabUI.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -399,7 +403,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -412,60 +415,48 @@ public class MainActivity extends AppCompatActivity implements
     }
     public void getRanRomDanhNgon(TextView tvContent,TextView tvAuthor,ImageView image){
         Random random=new Random();
-        Glide.with(this).load(AdaptorDanhNgon.draw[random.nextInt(AdaptorDanhNgon.draw.length-1)]).into(image);
-        DanhNgon danhNgonRd=danhNgons.get(random.nextInt(danhNgons.size()-1));
+        Glide.with(this).load(images.get(random.nextInt(images.size()))).into(image);
+        DanhNgon danhNgonRd=danhNgons.get(random.nextInt(danhNgons.size()));
         tvContent.setText(danhNgonRd.getContent());
-        tvAuthor.setText("~ "+danhNgonRd.getAuthor()+" ~");
+        tvAuthor.setText(danhNgonRd.getAuthor());
     }
     public Toolbar getToolbar() {
         return toolbar;
     }
 
     public void onSelectUI(View v) {
-        FloatingActionButton floatingActionButton= (FloatingActionButton) v;
+        Button button= (Button) v;
+        ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
+
         switch (tabUISelect){
             case 1:
-                toolbar.setBackgroundColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                 colorApp=floatingActionButton.getBackgroundTintList().getDefaultColor();
-                appLog.putValueByName(this,STATE_UI,"toolbar",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                toolbar.setBackgroundColor(buttonColor.getColor());
+                 colorApp=buttonColor.getColor();
+                appLog.putValueByName(this,STATE_UI,"toolbar",""+buttonColor.getColor());
                 break;
             case 2:
                 GradientDrawable tab_unselecter= (GradientDrawable) getResources().getDrawable(R.drawable.tab_unselect);
-                tab_unselecter.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"tab_unselecter",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                tab_unselecter.setColor(buttonColor.getColor());
+                appLog.putValueByName(this,STATE_UI,"tab_unselecter",""+buttonColor.getColor());
                 loadColorTab();
                 break;
             case 3:
                 GradientDrawable tab_selecter= (GradientDrawable) getResources().getDrawable(R.drawable.tab_select);
-                tab_selecter.setColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"tab_selecter",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                tab_selecter.setColor(buttonColor.getColor());
+                appLog.putValueByName(this,STATE_UI,"tab_selecter",""+buttonColor.getColor());
                 loadColorTab();
                 break;
             case 4:
-                frameLayout.setBackgroundColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                appLog.putValueByName(this,STATE_UI,"frameLayout",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
+                frameLayout.setBackgroundColor(buttonColor.getColor());
+                appLog.putValueByName(this,STATE_UI,"frameLayout",""+buttonColor.getColor());
                 break;
             default:
-//                getWindow().getDecorView().setSystemUiVisibility(
-//                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    window.setStatusBarColor(floatingActionButton.getBackgroundTintList().getDefaultColor());
-                    appLog.putValueByName(this,STATE_UI,"StatusBar",""+floatingActionButton.getBackgroundTintList().getDefaultColor());
-                }else {
-                    Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
-                }
+                    getWindow().setStatusBarColor(buttonColor.getColor());
+                    appLog.putValueByName(this,STATE_UI,"StatusBar",""+buttonColor.getColor());
+                }else Communication.showToastCenter(this,"Phiên bản hệ điều hành không hỗ trợ");
                 break;
         }
-
-//        setTheme(R.style.AppTheme2) ;
-//        TypedValue typedValue = new TypedValue();
-//        Resources.Theme theme = this.getTheme();
-//        theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-//        int color = typedValue.data;
-
-
-
     }
 
     private void setUI(String status, String bar, String tabs, String tabu, String bg) {
@@ -473,8 +464,7 @@ public class MainActivity extends AppCompatActivity implements
 //                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 //                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         if (!status.equals("")){
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) window.setStatusBarColor(Integer.parseInt(status));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)  getWindow().setStatusBarColor(Integer.parseInt(status));
         }
         if (!bar.equals("")){
             toolbar.setBackgroundColor(Integer.parseInt(bar));
@@ -524,5 +514,9 @@ public class MainActivity extends AppCompatActivity implements
 
         }
 
+    }
+
+    public String getRandomImage() {
+        return images.get((new Random()).nextInt(images.size()));
     }
 }

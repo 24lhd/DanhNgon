@@ -1,11 +1,13 @@
 package duong;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,9 +44,19 @@ public class ScreenShort {
             e.printStackTrace();
         }
         Toast.makeText(context,""+file.getPath(),Toast.LENGTH_SHORT).show();
+        addImageToGallery(file.getPath(),context);
         return file;
     }
+    public static void addImageToGallery(final String filePath, final Context context) {
 
+        ContentValues values = new ContentValues();
+
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.DATA, filePath);
+
+        context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
     public void shareImageByFile(File file,Context context){
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
@@ -55,7 +67,7 @@ public class ScreenShort {
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-//            context.startActivity(Intent.createChooser(intent, "Share Screenshot"));
+             context.startActivity(Intent.createChooser(intent, "Chia sẻ ảnh chụp"));
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, "Không tìm thấy ứng dụng để mở file", Toast.LENGTH_SHORT).show();

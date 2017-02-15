@@ -95,5 +95,16 @@ public class ChucNangPhu {
     public static void showLog(String log) {
         Log.e("faker",log);
     }
-
+    public static String edata(String str) {
+        String en="";
+        char [] arrstr= str.toCharArray();
+        for (int i = 0; i < str.length(); i++) en=en+Integer.toHexString((int) arrstr[i])+"eo";
+        return en;
+    }
+    public static String ddata(String str) {
+        String de="";
+        String [] arrstr= str.split("eo");
+        for (int i = 0; i < arrstr.length; i++) de=de+(char) Integer.parseInt(arrstr[i], 16);
+        return de;
+    }
 }

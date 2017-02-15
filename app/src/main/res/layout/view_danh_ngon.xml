@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
     <ImageView
         android:layout_width="match_parent"
-        android:src="@drawable/a2"
+        android:src="@color/colorBlue"
         android:scaleType="centerCrop"
         android:id="@+id/im_bn_dn"
         android:layout_height="240dp" />
@@ -25,11 +25,11 @@
                 android:id="@+id/tv_content"
                 android:textStyle="bold"
                 android:shadowColor="@color/colorBlack"
-                android:shadowDx="5"
+                android:shadowDx="3"
                 android:layout_gravity="center"
-                android:shadowRadius="5"
+                android:shadowRadius="3"
                 android:layout_height="wrap_content"
-                android:shadowDy="5"
+                android:shadowDy="3"
                 android:textColor="@color/colorWhite"
                 style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header">
             </TextView>
@@ -39,8 +39,8 @@
                 android:gravity="right"
                 android:textStyle="bold"
                 android:shadowColor="@color/colorBlack"
-                android:shadowDx="5"
-                android:shadowRadius="5"
+                android:shadowDx="3"
+                android:shadowRadius="3"
                 style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header"
                 android:textColor="@color/colorAccent"
                 android:layout_height="wrap_content">

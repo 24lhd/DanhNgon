@@ -5,44 +5,43 @@
     android:layout_height="@dimen/nav_header_height">
     <ImageView
         android:layout_width="match_parent"
-        android:src="@drawable/a2"
+        android:src="@color/colorBlue"
         android:scaleType="centerCrop"
         android:id="@+id/header_im_bn_dn"
         android:layout_height="@dimen/nav_header_height" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_alignBottom="@id/header_im_bn_dn"
+        android:background="@color/bg_danhngon"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-
+            android:layout_margin="@dimen/margin_view"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/header_tv_content"
                 android:textStyle="bold"
                 android:shadowColor="@color/colorBlack"
-                android:shadowDx="5"
-                android:text="a"
+                android:shadowDx="3"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/margin_view"
-                android:layout_marginRight="@dimen/margin_view"
-                android:shadowRadius="5"
+                android:shadowRadius="3"
                 android:layout_height="wrap_content"
-                android:shadowDy="5"
+                android:shadowDy="3"
                 android:textColor="@color/colorWhite"
-                style="@style/Base.TextAppearance.AppCompat.Medium">
+                style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/header_tv_author"
                 android:gravity="right"
                 android:textStyle="bold"
-                android:layout_marginRight="@dimen/margin_view"
-                android:layout_marginBottom="@dimen/margin_item"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:text="b"
+                android:shadowColor="@color/colorBlack"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="3"
+                style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header"
                 android:textColor="@color/colorAccent"
                 android:layout_height="wrap_content">
             </TextView>

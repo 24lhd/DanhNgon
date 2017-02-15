@@ -9,10 +9,14 @@ import java.io.Serializable;
 public class DanhNgon implements Serializable{
     public DanhNgon(String stt, String content, String author, String category, String favorite) {
         this.stt = stt;
-        this.content = content;
-        this.author = author;
-        this.category = category;
-        this.favorite = favorite;
+//        this.content = chucNangPhu.ddata(content);
+//        this.author = ChucNangPhu.ddata(author) ;
+//        this.category =chucNangPhu.ddata(category) ;
+//        this.favorite = chucNangPhu.ddata(favorite);
+        this.content = (content);
+        this.author =(author) ;
+        this.category =(category) ;
+        this.favorite = (favorite);
     }
 
     private String stt;

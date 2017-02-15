@@ -3,31 +3,31 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/danh_ngon"
-            android:icon="@android:drawable/star_on"
+            android:icon="@drawable/ic_danhngon"
             android:title="Danh Ngôn" />
         <item
             android:id="@+id/yeu_thich"
             android:icon="@android:drawable/star_on"
-            android:title="Yêu thích của tôi" />
+            android:title="Yêu thích" />
         <item
             android:id="@+id/thay_doi_ui"
-            android:icon="@android:drawable/ic_menu_set_as"
+            android:icon="@drawable/ic_change_ui"
             android:title="Thay đổi giao diện" />
         <item
             android:id="@+id/cai_dat"
-            android:icon="@android:drawable/ic_menu_set_as"
+            android:icon="@drawable/ic_setup"
             android:title="Cài đặt tiện ích" />
         <item
             android:id="@+id/danh_gia"
-            android:icon="@android:drawable/star_on"
+            android:icon="@drawable/ic_vote"
             android:title="Đánh giá" />
         <item
             android:id="@+id/chia_se"
             android:icon="@drawable/ic_menu_share"
-            android:title="Chia sẻ với bạn bè" />
+            android:title="Chia sẻ ứng dụng" />
         <item
             android:id="@+id/more_app"
-            android:icon="@android:drawable/sym_def_app_icon"
+            android:icon="@drawable/ic_moreapp"
             android:title="Ứng dụng khác" />
     </group>
 </menu>

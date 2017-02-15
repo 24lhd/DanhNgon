@@ -13,7 +13,7 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="match_parent"
-                android:src="@drawable/a2"
+                android:background="@color/colorBlue"
                 android:scaleType="centerCrop"
                 android:id="@+id/im_wd_bn_dn"
                 android:layout_height="240dp" />

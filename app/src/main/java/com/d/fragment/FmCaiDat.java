@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.d.activity.MainActivity;
-import com.d.danhngon.R;
+import com.lhd.danhngon.R;
 
 import duong.AppLog;
 

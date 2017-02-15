@@ -113,6 +113,8 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
     public class ViewHolderB extends RecyclerView.ViewHolder{
         public ViewHolderB(View itemView) {
             super(itemView);
+
+
         }
     }
 }
