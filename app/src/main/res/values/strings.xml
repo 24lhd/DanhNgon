@@ -45,4 +45,9 @@
     <string name="window_op_des">Hiện cửa sổ danh ngôn bất kì khi mở khóa màn hình điện thoại</string>
     <string name="notify_op">Thông báo khi bật màn hình</string>
     <string name="notify_op_des">Xuất hiện thông báo danh ngôn bất khi khi mở khoá màn hình điện thoại</string>
+    <string name="ads_native_vua">ca-app-pub-7062977963627166/2575304539</string>
+    <string name="ads_native_to">ca-app-pub-7062977963627166/3912436938</string>
+    <string name="ads_native_nho">nho</string>
+    <string name="ads_native_banner">ca-app-pub-7062977963627166/8765430135</string>
+    <string name="ads_native_full">ca-app-pub-7062977963627166/1098571330</string>
 </resources>

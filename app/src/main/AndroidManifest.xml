@@ -19,9 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.d.activity.Activity">
 
-        </activity>
         <service android:name="com.d.service.FlyBitch" />
         <service android:name="com.d.service.ShowService"/>
     </application>

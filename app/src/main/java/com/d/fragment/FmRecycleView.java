@@ -31,7 +31,7 @@ public class FmRecycleView extends Fragment {
         Category category = (Category) getArguments().getSerializable(FmDanhNgon.ARG_SECTION_NUMBER);
         ArrayList<Object> objects = new ArrayList<>();
         objects.addAll((ArrayList<DanhNgon>) getArguments().getSerializable(MainActivity.LIST_DATA));
-        recyclerView.setAdapter(new AdaptorDanhNgon(recyclerView, objects, category, 10, (MainActivity) getActivity()));
+        recyclerView.setAdapter(new AdaptorDanhNgon(recyclerView, objects, category,6, (MainActivity) getActivity()));
         return recyclerView;
     }
 }

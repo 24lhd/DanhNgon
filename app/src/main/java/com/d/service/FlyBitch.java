@@ -41,7 +41,8 @@ public class FlyBitch extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-
+				Intent intent1=new Intent(FlyBitch.this,ShowService.class);
+				stopService(intent1);
 				Intent intentMyService=new Intent(FlyBitch.this,ShowService.class);
 				Bundle bundle=new Bundle();
 				bundle.putSerializable(MainActivity.DATA,getRandomDanhNgon());

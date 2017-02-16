@@ -35,6 +35,7 @@ import com.d.database.DuLieu;
 import com.d.fragment.FmCaiDat;
 import com.d.fragment.FmDanhNgon;
 import com.d.fragment.FmRecycleView;
+import com.d.object.ADSFull;
 import com.d.object.Category;
 import com.d.object.DanhNgon;
 import com.d.task.TaskGetCategory;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements
     private FmCaiDat fmCaiDat;
     private ArrayList<String> images;
     private DrawerLayout drawer;
+    private ADSFull adsFull;
 
     public int getColorApp() {
         return colorApp;
@@ -168,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initViewContent() {
+        adsFull=new ADSFull(this);
         headIm= (ImageView) findViewById(R.id.header_im_bn_dn);
         headContent= (TextView) findViewById(R.id.header_tv_content);
         headAuthor= (TextView) findViewById(R.id.header_tv_author);
@@ -256,6 +259,10 @@ public class MainActivity extends AppCompatActivity implements
             ChucNangPhu.finishDoubleCick(this);
     }
 
+    public ADSFull getAdsFull() {
+        return adsFull;
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -264,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.danh_ngon) {
           setViewDanhNgon();
         } else if (id == R.id.cai_dat) {
+            adsFull.showADSFull();
             caiDat();
         } else if (id == R.id.danh_gia) {
             danhGiaApp();
@@ -272,8 +280,10 @@ public class MainActivity extends AppCompatActivity implements
         }else if (id == R.id.more_app) {
             moreApp();
         }else if (id == R.id.thay_doi_ui) {
+            adsFull.showADSFull();
             showDialogSetUI();
         }else if (id == R.id.yeu_thich) {
+
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             FmRecycleView fmRecycleView=new FmRecycleView();
             Bundle args = new Bundle();

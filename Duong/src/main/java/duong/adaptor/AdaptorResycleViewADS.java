@@ -17,7 +17,7 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
     private Object doiTuongCanThem;
     public static final int A=1;
     public static final int B=0;
-    private int viTriThem=10;
+    private int viTriThem=6;
     public RecyclerView getRecyclerView() {
         return recyclerView;
     }
@@ -52,18 +52,6 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
     }
 
     public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
-//    {
-//        switch (viewType) {
-//            case B:
-//                View nativeExpressLayoutView = LayoutInflater.from(parent.getContext()).inflate(itemB, parent, false);
-//                return new ViewHolderB(nativeExpressLayoutView);
-//            default:
-//            case A:
-//                View menuItemLayoutView = LayoutInflater.from(parent.getContext()).inflate(itemA, parent, false);
-//                return new ViewHolderA(menuItemLayoutView);
-//        }
-//    }
-
     @Override
     public int getItemViewType(int position) {
         return (position % viTriThem == 0&&position>0) ? B : A;
@@ -72,7 +60,7 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
-        switch (viewType) {
+        switch (viewType){
             case B:
                 ViewHolderB viewHolderB= (ViewHolderB) holder;
                 setViewHolderB(viewHolderB,position);
@@ -82,7 +70,6 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
                 ViewHolderA viewHolderA= (ViewHolderA) holder;
                 setViewHolderA(viewHolderA,position);
                 return;
-
         }
     }
 
@@ -102,9 +89,6 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
     }
     public abstract void setViewHolderB(ViewHolderB viewHolder, int position);
     public abstract void setViewHolderA(ViewHolderA viewHolder, int position);
-
-
-
     public class ViewHolderA extends RecyclerView.ViewHolder{
         public ViewHolderA(View itemView) {
             super(itemView);
@@ -113,8 +97,6 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
     public class ViewHolderB extends RecyclerView.ViewHolder{
         public ViewHolderB(View itemView) {
             super(itemView);
-
-
         }
     }
 }

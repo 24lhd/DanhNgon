@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.d.activity.MainActivity;
 import com.d.object.DanhNgon;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.lhd.danhngon.R;
 
 import java.util.List;
@@ -30,10 +32,15 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
     private AlertDialog alertDialog;
     private View view;
     private Random random;
-
+    class NativeExpressAdViewHolder extends ViewHolderB {
+         NativeExpressAdView nativeExpressAdView;
+        public NativeExpressAdViewHolder(View view) {
+            super(view);
+            this.nativeExpressAdView= (NativeExpressAdView) view.findViewById(R.id.ads_navite_vua);
+        }
+    }
     class DanhNgonHover extends ViewHolderA{
         TextView stt,content,author;
-
         public DanhNgonHover(View itemView) {
             super(itemView);
             this.stt= (TextView) itemView.findViewById(R.id.tv_stt);
@@ -54,12 +61,10 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case AdaptorResycleViewADS.B:
+            case B:
                 View nativeExpressLayoutView = LayoutInflater.from(parent.getContext()).
-                        inflate(
-                                R.layout.card_ads,
-                        parent, false);
-                return new ViewHolderB(nativeExpressLayoutView);
+                        inflate(R.layout.native_express_ad_vua, parent, false);
+                return new NativeExpressAdViewHolder(nativeExpressLayoutView);
             default:
             case A:
                 View menuItemLayouthView = LayoutInflater.from(parent.getContext()).
@@ -69,7 +74,8 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
     }
     @Override
     public void setViewHolderB(ViewHolderB viewHolder, int position) {
-
+        NativeExpressAdViewHolder nativeExpressAdViewHolder= (NativeExpressAdViewHolder) viewHolder;
+        nativeExpressAdViewHolder.nativeExpressAdView.loadAd(new AdRequest.Builder().build());
     }
     @Override
     public void setViewHolderA( ViewHolderA viewHolder, int position) {
@@ -81,6 +87,7 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
         danhNgonHover.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.getAdsFull().showADSFull();
                 LayoutInflater layoutInflater=LayoutInflater.from(activity);
                 view= (View) layoutInflater.inflate(R.layout.view_danh_ngon,null);
                 TextView tvContent= (TextView) view.findViewById(R.id.tv_content);
@@ -90,9 +97,6 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                 tvAuthor.setTextColor(activity.getColorApp());
                 tvAuthor.setText(danhNgon.getAuthor());
                 Glide.with(activity).load(activity.getRandomImage()).into(img);
-//                Glide.with(activity).load(draw[random.nextInt(draw.length-1)]).into(img);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-//                    Picasso.with(activity).load(draw[random.nextInt(draw.length-1)]).into(img);
                 String favorite="Yêu thích";
                 if (danhNgon.getFavorite().contains("1")) favorite="Bỏ thích";
                 alertDialog=DiaLogThongBao.createDiaLogCustemView(activity, view,null,
