@@ -26,9 +26,8 @@ import com.d.database.DuLieu;
 import com.d.object.DanhNgon;
 import com.lhd.danhngon.R;
 
-import java.util.Random;
-
 import duong.AppLog;
+import duong.Conections;
 import duong.ScreenShort;
 /**
  * Created by d on 28/01/2017.
@@ -70,7 +69,7 @@ public class ShowService extends Service {
         PendingIntent pendingIntentNull = PendingIntent.getActivity(this, NOT_USED, intentOpen, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_camera)
+                        .setSmallIcon(R.drawable.ic_app)
                         .setContentTitle("Danh Ngôn Sống Mỗi Ngày")
                         .setContentIntent(pendingIntentNull).setColor(getResources().getColor(R.color.colorPrimary))
                         .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText
@@ -101,16 +100,16 @@ public class ShowService extends Service {
         TextView tvAuthor= (TextView) view.findViewById(R.id.tv_wd_author);
         tvAuthor.setText(danhNgon.getAuthor());
         ImageView img= (ImageView) view.findViewById(R.id.im_wd_bn_dn);
-        Random random=new Random();
         relativeLayout= (RelativeLayout) view.findViewById(R.id.view_wd_dn);
+        if (Conections.isOnline(this))
         Glide.with(this).load(image).into(img);
+        else Glide.with(this).load(R.drawable.a151).into(img);
         Button btYeuThich= (Button) view.findViewById(R.id.bt_wd_yeu_thich);
         Button btAn= (Button) view.findViewById(R.id.bt_wd_an);
         Button btChiaSe= (Button) view.findViewById(R.id.bt_wd_chia_se_anh);
         btAn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 stopSelf();
             }
         });
@@ -120,7 +119,6 @@ public class ShowService extends Service {
                 ScreenShort screenShort=new ScreenShort();
                 screenShort.shareImageByFile(screenShort.takeSreenShortByView(relativeLayout,ShowService.this),ShowService.this);
                 stopSelf();
-
             }
         });
         btYeuThich.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +126,6 @@ public class ShowService extends Service {
             public void onClick(View v) {
                 duLieu.updateDanhNgonFarvorite(danhNgon);
                 stopSelf();
-
             }
         });
 

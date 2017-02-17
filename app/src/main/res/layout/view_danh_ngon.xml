@@ -5,9 +5,9 @@
     android:layout_height="wrap_content">
     <ImageView
         android:layout_width="match_parent"
-        android:src="@color/colorBlue"
         android:scaleType="centerCrop"
         android:id="@+id/im_bn_dn"
+        android:src="@color/colorBlue_200"
         android:layout_height="240dp" />
     <ScrollView
         android:layout_width="match_parent"
@@ -24,12 +24,8 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/tv_content"
                 android:textStyle="bold"
-                android:shadowColor="@color/colorBlack"
-                android:shadowDx="3"
                 android:layout_gravity="center"
-                android:shadowRadius="3"
                 android:layout_height="wrap_content"
-                android:shadowDy="3"
                 android:textColor="@color/colorWhite"
                 style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header">
             </TextView>
@@ -38,9 +34,6 @@
                 android:id="@+id/tv_author"
                 android:gravity="right"
                 android:textStyle="bold"
-                android:shadowColor="@color/colorBlack"
-                android:shadowDx="3"
-                android:shadowRadius="3"
                 style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header"
                 android:textColor="@color/colorAccent"
                 android:layout_height="wrap_content">

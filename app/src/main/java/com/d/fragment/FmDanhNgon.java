@@ -3,6 +3,7 @@ package com.d.fragment;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -49,7 +50,16 @@ public class FmDanhNgon extends Fragment {
         return tabLayout;
     }
 
-    private void initView() {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+    private void initView(){
         tabLayout= (TabLayout) rootView.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) rootView.findViewById(R.id.container);
         mSectionsPagerAdapter = new SectionsPagerAdapter(mainActivity.getSupportFragmentManager());
@@ -57,12 +67,14 @@ public class FmDanhNgon extends Fragment {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(mViewPager);
-        for (Category category:mainActivity.getCategories()) {
-            View view=inflater.inflate(R.layout.tab_custem,null);
-            TextView tv= (TextView) view.findViewById(R.id.tv_tab);
-            tv.setText(""+category.getCategory());
-            tabLayout.getTabAt(mainActivity.getCategories().indexOf(category)).setCustomView(tv);
-        }
+        try {
+            for (Category category:mainActivity.getCategories()) {
+                View view=inflater.inflate(R.layout.tab_custem,null);
+                TextView tv= (TextView) view.findViewById(R.id.tv_tab);
+                tv.setText(""+category.getCategory());
+                tabLayout.getTabAt(mainActivity.getCategories().indexOf(category)).setCustomView(tv);
+            }
+        }catch (NullPointerException e){}
         tabLayout.setSelectedTabIndicatorHeight(0);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.colorFrey));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

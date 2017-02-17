@@ -5,6 +5,28 @@
         android:layout_width="match_parent"
         android:padding="@dimen/margin_view"
         android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:layout_marginTop="@dimen/margin_view"
+            android:layout_height="48dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Thay đổi giao diện"
+                android:id="@+id/title_change_ui"
+                android:gravity="center"
+                style="@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_height="match_parent" />
+            <ImageButton
+                android:layout_width="48dp"
+                android:id="@+id/imb_close_change_ui"
+                android:src="@android:drawable/ic_delete"
+                android:layout_height="48dp" />
+        </LinearLayout>
+
         <android.support.design.widget.TabLayout
             android:layout_width="wrap_content"
             android:id="@+id/tab_ui_layout"
@@ -21,7 +43,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:shadowRadius="12"
-            android:layout_marginLeft="@dimen/margin_view"
             android:onClick="onSelectUI"
             android:shadowColor="@color/colorPrimary"
             android:background="@color/A"
@@ -73,7 +94,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:shadowRadius="12"
-            android:layout_marginLeft="@dimen/margin_view"
             android:onClick="onSelectUI"
             android:shadowColor="@color/colorPrimary"
             android:background="@color/L"
@@ -125,7 +145,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:shadowRadius="12"
-            android:layout_marginLeft="@dimen/margin_view"
             android:onClick="onSelectUI"
             android:shadowColor="@color/colorPrimary"
             android:background="@color/X"
@@ -177,7 +196,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:shadowRadius="12"
-            android:layout_marginLeft="@dimen/margin_view"
             android:onClick="onSelectUI"
             android:shadowColor="@color/colorPrimary"
             android:background="@color/H2"

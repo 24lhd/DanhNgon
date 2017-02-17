@@ -1,5 +1,6 @@
 package duong.adaptor;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,11 +8,17 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import duong.Conections;
+
 /**
  * Created by d on 17/01/2017.
+ *
+ * ý tưởng đặt quảng cáo khi offline sẽ ẩn là k cần v\dùng for đế add chỉ cần bắt online thì return getItemViewType vào đúng vị trí cố định
+ * khi off line thì k return
  */
 
 public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private  Context context;
     private RecyclerView recyclerView;
     private List<Object> listObject;
     private Object doiTuongCanThem;
@@ -40,21 +47,24 @@ public abstract class AdaptorResycleViewADS extends RecyclerView.Adapter<Recycle
             objects.add(i, doiTuongCanThem);
         }
     }
-
-    public AdaptorResycleViewADS(RecyclerView recyclerView , List<Object> listObject, Object doiTuongCanThem, int viTriThem) {
+    public AdaptorResycleViewADS(RecyclerView recyclerView , List<Object> listObject, Object doiTuongCanThem, int viTriThem, Context context) {
         this.recyclerView = recyclerView;
         this.listObject = listObject;
         this.doiTuongCanThem = doiTuongCanThem;
         this.viTriThem = viTriThem;
-        for (int i = viTriThem; i <= listObject.size(); i += viTriThem) {
-            listObject.add(i, doiTuongCanThem);
-        }
+        this.context = context;
+//        if (Conections.isOnline(context)){
+//            for (int i = viTriThem; i <= listObject.size(); i += viTriThem)
+//                listObject.add(i, doiTuongCanThem);
+//        }
+
+
     }
 
     public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
     @Override
     public int getItemViewType(int position) {
-        return (position % viTriThem == 0&&position>0) ? B : A;
+        return (position % viTriThem == 0&&position>0&& Conections.isOnline(context)) ? B : A;
     }
 
     @Override

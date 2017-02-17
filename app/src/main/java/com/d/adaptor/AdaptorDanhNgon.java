@@ -18,6 +18,8 @@ import com.lhd.danhngon.R;
 import java.util.List;
 import java.util.Random;
 
+import duong.Communication;
+import duong.Conections;
 import duong.DiaLogThongBao;
 import duong.ScreenShort;
 import duong.adaptor.AdaptorResycleViewADS;
@@ -53,7 +55,7 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                            List<Object> listObject,
                            Object doiTuongCanThem,
                            int viTriThem, MainActivity activity) {
-        super(recyclerView, listObject, doiTuongCanThem, viTriThem);
+        super(recyclerView, listObject, doiTuongCanThem, viTriThem,activity);
         this.listObject = listObject;
         this.activity = activity;
         random=new Random();
@@ -87,7 +89,7 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
         danhNgonHover.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.getAdsFull().showADSFull();
+//                activity.getAdsFull().showADSFull();
                 LayoutInflater layoutInflater=LayoutInflater.from(activity);
                 view= (View) layoutInflater.inflate(R.layout.view_danh_ngon,null);
                 TextView tvContent= (TextView) view.findViewById(R.id.tv_content);
@@ -96,7 +98,12 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                 tvContent.setText(danhNgon.getContent());
                 tvAuthor.setTextColor(activity.getColorApp());
                 tvAuthor.setText(danhNgon.getAuthor());
+                if (Conections.isOnline(activity))
                 Glide.with(activity).load(activity.getRandomImage()).into(img);
+                else{
+                    Glide.with(activity).load(R.drawable.a151).into(img);
+                    Communication.showToast(activity,activity.getResources().getString(R.string.toast_offline));
+                }
                 String favorite="Yêu thích";
                 if (danhNgon.getFavorite().contains("1")) favorite="Bỏ thích";
                 alertDialog=DiaLogThongBao.createDiaLogCustemView(activity, view,null,
@@ -113,6 +120,7 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                         else activity.getDuLieu().updateDanhNgonFarvorite(danhNgon);
                         notifyDataSetChanged();
                         alertDialog.dismiss();
+                        activity.getAdsFull().showADSFull();
 
                     }
                 },new View.OnClickListener() {

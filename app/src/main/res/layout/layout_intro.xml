@@ -11,6 +11,7 @@
         <ImageView
             android:layout_width="256dp"
             android:layout_gravity="center"
+            android:id="@+id/im_intro"
             android:src="@drawable/ic_app"
             android:layout_height="256dp" />
     </LinearLayout>

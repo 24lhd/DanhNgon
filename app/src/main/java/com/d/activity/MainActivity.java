@@ -17,6 +17,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -24,8 +25,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +53,7 @@ import java.util.Random;
 import duong.AppLog;
 import duong.ChucNangPhu;
 import duong.Communication;
+import duong.Conections;
 import duong.DiaLogThongBao;
 
 import static com.d.database.DuLieu.PATH_DB;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements
     public static final String THIS = "this";
     public static final String STATE_UI = "state_ui";
     public static final String IMAGE = "image";
+    private static final String DANH_NGON = "danh ngon";
+    private static final String CATE_GORY = "cate_gory";
     public static String DATA="data";
     private Toolbar toolbar;
     private ArrayList<Category> categories;
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements
     private ArrayList<String> images;
     private DrawerLayout drawer;
     private ADSFull adsFull;
+    private AlertDialog alertDialog;
 
     public int getColorApp() {
         return colorApp;
@@ -87,8 +95,19 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ImageView imageView=new ImageView(this);
+        /**
+         * nếu bị null là khi thay đổi ngang màn hình nên bị null
+         * vì mk đã lưu nó lại nên lấy nó ra
+         */
+        if (savedInstanceState != null) {
+            danhNgons= (ArrayList<DanhNgon>) savedInstanceState.getSerializable(DANH_NGON);
+            categories= (ArrayList<Category>) savedInstanceState.getSerializable(CATE_GORY);
+        }else{}
+
         setContentView(R.layout.layout_intro);
+
+        Animation myRotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.img_amin);
+        ((ImageView)findViewById(R.id.im_intro)).startAnimation(myRotation);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         RelativeLayout relativeLayout= (RelativeLayout) findViewById(R.id.fm_layout_intro);
         appLog=new AppLog();
@@ -106,6 +125,18 @@ public class MainActivity extends AppCompatActivity implements
             }
         }, 1000);
 
+    }
+
+    /**
+     * khi từ đã lưu khi thay đổi trạng tháy ta sẽ lấy dữ liệu đẫ lưu ra
+     * @param savedInstanceState
+     */
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore state members from saved instance
+        danhNgons= (ArrayList<DanhNgon>) savedInstanceState.getSerializable(DANH_NGON); // gét lấy ra
+        categories= (ArrayList<Category>) savedInstanceState.getSerializable(CATE_GORY);
     }
     private void initData() {
         duLieu = new DuLieu(this);
@@ -198,6 +229,11 @@ public class MainActivity extends AppCompatActivity implements
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        setUI(appLog.getValueByName(this,STATE_UI,"StatusBar"),
+                appLog.getValueByName(this,STATE_UI,"toolbar"),
+                appLog.getValueByName(this,STATE_UI,"tab_selecter"),
+                appLog.getValueByName(this,STATE_UI,"tab_unselecter"),
+                appLog.getValueByName(this,STATE_UI,"frameLayout"));
     }
 
     public void hideDialogLoad() {
@@ -212,6 +248,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public ArrayList<Category> getCategories() {
+        if (categories==null){
+            startGetCategory();
+        }
         return categories;
     }
 
@@ -238,25 +277,25 @@ public class MainActivity extends AppCompatActivity implements
         fmDanhNgon=new FmDanhNgon();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        setUI(appLog.getValueByName(this,STATE_UI,"StatusBar"),
-                appLog.getValueByName(this,STATE_UI,"toolbar"),
-                appLog.getValueByName(this,STATE_UI,"tab_selecter"),
-                appLog.getValueByName(this,STATE_UI,"tab_unselecter"),
-                appLog.getValueByName(this,STATE_UI,"frameLayout"));
     }
 
     public DuLieu getDuLieu() {
         return duLieu;
     }
-
+    static final String STATE_SCORE = "playerScore";
+    static final String STATE_LEVEL = "playerLevel";
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-
             drawer.closeDrawer(GravityCompat.START);
-        } else
-            ChucNangPhu.finishDoubleCick(this);
+        } else{
+            adsFull.showADSFull();
+            finish();
+        }
+
+//            ChucNangPhu.finishDoubleCick(this);
+
     }
 
     public ADSFull getAdsFull() {
@@ -283,7 +322,6 @@ public class MainActivity extends AppCompatActivity implements
             adsFull.showADSFull();
             showDialogSetUI();
         }else if (id == R.id.yeu_thich) {
-
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             FmRecycleView fmRecycleView=new FmRecycleView();
             Bundle args = new Bundle();
@@ -347,12 +385,19 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showDialogSetUI() {
+          alertDialog = null;
         LayoutInflater layoutInflater=getLayoutInflater();
         View view=layoutInflater.inflate(R.layout.layout_change_ui,null);
         tabUI= (TabLayout) view.findViewById(R.id.tab_ui_layout);
         tabUI.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabUI.setTabGravity(TabLayout.GRAVITY_FILL);
         tabUI.setSelectedTabIndicatorHeight(0);
+        ((ImageButton) view.findViewById(R.id.imb_close_change_ui)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
 
         TabLayout.Tab tabStatus=tabUI.newTab();
         tabStatus.setText("Status Bar");
@@ -400,7 +445,10 @@ public class MainActivity extends AppCompatActivity implements
         });
         tabUI.getTabAt(0).select();
         tabUISelect=0;
-        DiaLogThongBao.createDiaLogView(this, view, null , null, null, getResources().getColor(R.color.colorPrimary),null, null).show();
+        alertDialog=DiaLogThongBao.createDiaLogView(this, view, null , null, null,
+                getResources().getColor(R.color.colorPrimary),null, null);
+        alertDialog.show();
+
 
     }
 
@@ -413,6 +461,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Communication.showToast(this,"Chức năng này đang được phát triển");
         return super.onOptionsItemSelected(item);
     }
 
@@ -425,7 +474,9 @@ public class MainActivity extends AppCompatActivity implements
     }
     public void getRanRomDanhNgon(TextView tvContent,TextView tvAuthor,ImageView image){
         Random random=new Random();
+        if (Conections.isOnline(this))
         Glide.with(this).load(images.get(random.nextInt(images.size()))).into(image);
+        else Glide.with(this).load(R.drawable.a151).into(image);
         DanhNgon danhNgonRd=danhNgons.get(random.nextInt(danhNgons.size()));
         tvContent.setText(danhNgonRd.getContent());
         tvAuthor.setText(danhNgonRd.getAuthor());
@@ -526,6 +577,19 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+
+    /**
+     * lưu trạng thái khi mk xoay màn hình
+     * put dữ liệu cần lưu vào savedInstanceState
+     * @param savedInstanceState dùng để lưu trữ dữ liệu
+     */
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putSerializable(DANH_NGON,getDanhNgons());
+        savedInstanceState.putSerializable(CATE_GORY,getCategories());
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
     public String getRandomImage() {
         return images.get((new Random()).nextInt(images.size()));
     }

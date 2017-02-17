@@ -78,6 +78,12 @@ public class DiaLogThongBao {
         turnOnLoactionDialog.setNeutralButton(nameBtnNo,null);
         turnOnLoactionDialog.setNegativeButton(nameBtnGim,null);
         turnOnLoactionDialog.setView(view);
+        turnOnLoactionDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+            }
+        });
         android.support.v7.app.AlertDialog alertDialog=turnOnLoactionDialog.create();
 //        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alertDialog.show();

@@ -10,8 +10,6 @@
             android:layout_width="match_parent"
             android:id="@+id/tab_layout"
             android:background="@color/colorWhite"
-            android:padding="0dp"
-            app:tabPadding="0dp"
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Body2"
             android:layout_height="wrap_content">
         </android.support.design.widget.TabLayout>

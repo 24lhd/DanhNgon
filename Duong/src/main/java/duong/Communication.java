@@ -11,7 +11,7 @@ import android.widget.Toast;
  */
 
 public class Communication {
-    public void showToast(Context context,String sms) {
+    public static void showToast(Context context, String sms) {
         Toast.makeText(context,sms,Toast.LENGTH_SHORT).show();
     }
     public static void showToastCenter(Context context,String sms) {

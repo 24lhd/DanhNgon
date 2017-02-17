@@ -13,9 +13,9 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="match_parent"
-                android:background="@color/colorBlue"
                 android:scaleType="centerCrop"
                 android:id="@+id/im_wd_bn_dn"
+                android:src="@color/colorBlue_200"
                 android:layout_height="240dp" />
             <ScrollView
                 android:layout_width="match_parent"
@@ -32,12 +32,9 @@
                         android:id="@+id/tv_wd_content"
                         android:textStyle="bold"
                         android:shadowColor="@color/colorBlack"
-                        android:shadowDx="5"
                         android:layout_gravity="center"
                         android:text="a"
-                        android:shadowRadius="5"
                         android:layout_height="wrap_content"
-                        android:shadowDy="5"
                         android:textColor="@color/colorWhite"
                         style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header">
                     </TextView>
@@ -48,8 +45,6 @@
                         android:textStyle="bold"
                         android:text="a"
                         android:shadowColor="@color/colorBlack"
-                        android:shadowDx="5"
-                        android:shadowRadius="5"
                         style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header"
                         android:textColor="@color/colorAccent"
                         android:layout_height="wrap_content">

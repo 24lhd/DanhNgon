@@ -50,4 +50,5 @@
     <string name="ads_native_nho">nho</string>
     <string name="ads_native_banner">ca-app-pub-7062977963627166/8765430135</string>
     <string name="ads_native_full">ca-app-pub-7062977963627166/1098571330</string>
+    <string name="toast_offline">Bạn đang ở chế độ ngoại tuyến</string>
 </resources>
