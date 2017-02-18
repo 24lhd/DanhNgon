@@ -14,9 +14,6 @@ import java.io.OutputStream;
  */
 
 public class DuongSQLite {
-    public DuongSQLite() {
-
-    }
     public void cloneDatabase() {
         database.close();
     }

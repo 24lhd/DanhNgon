@@ -23,6 +23,7 @@
             <ImageButton
                 android:layout_width="48dp"
                 android:id="@+id/imb_close_change_ui"
+                android:background="@color/md_white_1000"
                 android:src="@android:drawable/ic_delete"
                 android:layout_height="48dp" />
         </LinearLayout>

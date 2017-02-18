@@ -54,7 +54,6 @@ public class FmDanhNgon extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
@@ -95,7 +94,6 @@ public class FmDanhNgon extends Fragment {
             }
         });
         tabLayout.getTabAt(0).select();
-
         mViewPager.setCurrentItem(0);
     }
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
