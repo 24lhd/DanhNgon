@@ -98,15 +98,13 @@ public class DiaLogThongBao {
         gim.setOnClickListener(noListener);
         return alertDialog;
     }
-    public AlertDialog createDiaLogView(Context context,View view,String title,String msg
+    public  AlertDialog createDiaLogView(Context context,View view,String title,String msg
             ,String nameBtnYes,String nameBtnNo,int colorBtn,View.OnClickListener yesListener){
         AlertDialog.Builder turnOnLoactionDialog=new AlertDialog.Builder(context);
         turnOnLoactionDialog.setTitle(title);
-        turnOnLoactionDialog.setMessage(msg);
         turnOnLoactionDialog.setPositiveButton(nameBtnYes,null);
         turnOnLoactionDialog.setNeutralButton(nameBtnNo,null);
         AlertDialog alertDialog=turnOnLoactionDialog.create();
-
         Button yes=alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         yes.setTextColor(colorBtn);
         yes.setOnClickListener(yesListener);

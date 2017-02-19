@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -350,10 +352,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fmRecycleView.setArguments(args);
             transaction.replace(R.id.frame_fm, fmRecycleView);
             transaction.commit();
+        }else if (id == R.id.mn_dev) {
+            showDialogDev();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showDialogDev() {
+        String str="<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "<meta charset=\"utf-8\">" +
+                " <style type=\"text/css\" media=\"screen\">" +
+                " h2,#tenpg,#dev{" +
+                " color: #4267b2" +
+                " }" +
+                " </style> " +
+                "</head>" +
+                "<body>" +
+                "<h2>" +
+                getString(R.string.app_name) +
+                "</h2>" +
+                "<p>Phần mềm được phát triển qua fanpage Facebook : <span id=\"tenpg\">1001 Câu Danh Ngôn Ý Nghĩa</span><p>Địa chỉ: fb.com/1001CauDanhNgon.quote<p>Developer " +
+                "<span id=\"dev\"> : #Ken</span><p>Xin chân thành cảm ơn sự ủng hộ của các bạn!</p>" +
+                "</body>" +
+                "</html>";
+        WebView wb=new WebView(this);
+        wb.loadDataWithBaseURL(null,str,"text/html","utf-8",null);
+        AlertDialog.Builder turnOnLoactionDialog=new AlertDialog.Builder(this);
+        turnOnLoactionDialog.setTitle("Thông tin phát triển");
+        turnOnLoactionDialog.setPositiveButton("xem trang",null);
+        AlertDialog alertDialog=turnOnLoactionDialog.create();
+        alertDialog.setView(wb);
+        alertDialog.show();
+        Button yes=alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        yes.setTextColor(colorApp);
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/1001CauDanhNgon.quote"));
+                startActivity(browserIntent);
+            }
+        });
+
+
     }
 
     private void caiDat() {
@@ -381,7 +425,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "Link tải phần mềm Danh Ngôn");
-            String sAux = "Ứng dụng Danh Ngôn \n";
+            String sAux = "Ứng dụng Danh Ngôn ";
+
             sAux = sAux + "https://play.google.com/store/apps/details?id=com.lhd.danhngon";
             i.putExtra(Intent.EXTRA_TEXT, sAux);
             startActivity(Intent.createChooser(i, "choose one"));
@@ -418,7 +463,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 alertDialog.dismiss();
             }
         });
-
         TabLayout.Tab tabStatus=tabUI.newTab();
         tabStatus.setText("Status Bar");
         tabUI.addTab(tabStatus);
@@ -508,6 +552,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else Glide.with(this).load(R.drawable.a151).into(image);
         DanhNgon danhNgonRd=danhNgons.get(random.nextInt(danhNgons.size()));
         tvContent.setText(danhNgonRd.getContent());
+        tvAuthor.setTextColor(colorApp);
         tvAuthor.setText(danhNgonRd.getAuthor());
     }
     public Toolbar getToolbar() {

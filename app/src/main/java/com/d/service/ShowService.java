@@ -29,6 +29,9 @@ import com.lhd.danhngon.R;
 import duong.AppLog;
 import duong.Conections;
 import duong.ScreenShort;
+
+import static com.d.activity.MainActivity.STATE_UI;
+
 /**
  * Created by d on 28/01/2017.
  */
@@ -40,6 +43,7 @@ public class ShowService extends Service {
     private String image;
 
     private RelativeLayout relativeLayout;
+    private AppLog appLog;
 
     @Nullable
     @Override
@@ -56,6 +60,7 @@ public class ShowService extends Service {
         if (danhNgon==null) return START_NOT_STICKY;
         if ((new AppLog()).getValueByName(this,"sw_op","sw_window").contains("1")) showWindow();
         if ((new AppLog()).getValueByName(this,"sw_op","sw_notify").contains("1")) showNotify();
+
         return START_NOT_STICKY;
     }
     private WindowManager windowManager;
@@ -101,8 +106,14 @@ public class ShowService extends Service {
         tvAuthor.setText(danhNgon.getAuthor());
         ImageView img= (ImageView) view.findViewById(R.id.im_wd_bn_dn);
         relativeLayout= (RelativeLayout) view.findViewById(R.id.view_wd_dn);
+        appLog=new AppLog();
+        appLog.openLog(this,MainActivity.STATE_UI);
+        if (!appLog.getValueByName(this,STATE_UI,"toolbar").equals("")){
+            tvAuthor.setTextColor(Integer.parseInt(appLog.getValueByName(this,STATE_UI,"toolbar")));
+        }
         if (Conections.isOnline(this))
         Glide.with(this).load(image).into(img);
+
         else Glide.with(this).load(R.drawable.a151).into(img);
         Button btYeuThich= (Button) view.findViewById(R.id.bt_wd_yeu_thich);
         Button btAn= (Button) view.findViewById(R.id.bt_wd_an);

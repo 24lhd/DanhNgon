@@ -20,7 +20,11 @@
         <item
             android:id="@+id/danh_gia"
             android:icon="@drawable/ic_vote"
-            android:title="Đánh giá" />
+            android:title="Đánh giá ứng dụng" />
+        <item
+            android:id="@+id/mn_dev"
+            android:icon="@drawable/ic_code"
+            android:title="Thông tin phát triển" />
         <item
             android:id="@+id/chia_se"
             android:icon="@drawable/ic_menu_share"
