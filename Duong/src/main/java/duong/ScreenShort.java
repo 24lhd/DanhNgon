@@ -64,8 +64,8 @@ public class ScreenShort {
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-             context.startActivity(Intent.createChooser(intent, "Chia sẻ ảnh chụp"));
-//            context.startActivity(intent);
+//             context.startActivity(Intent.createChooser(intent, "Chia sẻ ảnh chụp"));
+            context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, "Không tìm thấy ứng dụng để mở file", Toast.LENGTH_SHORT).show();
         }
