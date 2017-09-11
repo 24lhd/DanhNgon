@@ -53,4 +53,5 @@
     <string name="toast_offline">Bạn đang ở chế độ ngoại tuyến</string>
     <string name="about_app">Ứng dụng được phát triển bởi #Ken từ 1001 Câu Danh Ngôn Ý Nghĩa</string>
     <string name="facebook_app_id">126697414631909</string>
+    <string name="facebook_ads_id_in_list_video">126697414631909_126697687965215</string>
 </resources>

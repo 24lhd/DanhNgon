@@ -6,14 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.StringLoader;
 import com.d.activity.MainActivity;
 import com.d.object.DanhNgon;
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.NativeExpressAdView;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdView;
 import com.lhd.danhngon.R;
 
 import java.util.List;
@@ -24,6 +27,9 @@ import duong.Conections;
 import duong.DiaLogThongBao;
 import duong.ScreenShort;
 import duong.adaptor.AdaptorResycleViewADS;
+
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.NativeExpressAdView;
 
 /**
  * Created by d on 20/01/2017.
@@ -36,14 +42,6 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
     private View view;
     private Random random;
 
-    class NativeExpressAdViewHolder extends ViewHolderB {
-//        NativeExpressAdView nativeExpressAdView;
-
-        public NativeExpressAdViewHolder(View view) {
-            super(view);
-//            this.nativeExpressAdView = (NativeExpressAdView) view.findViewById(R.id.ads_navite_vua);
-        }
-    }
 
     class DanhNgonHover extends ViewHolderA {
         TextView content, author;
@@ -69,13 +67,54 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
         random = new Random();
     }
 
+
+    class FBAds extends ViewHolderAds {
+        NativeAd nativeAd;
+
+        public FBAds(final View itemView) {
+            super(itemView);
+            loadAds();
+        }
+
+        private void loadAds() {
+            nativeAd = new NativeAd(activity, activity.getResources().getString(R.string.facebook_ads_id_in_list_video));
+            nativeAd.setAdListener(new AdListener() {
+
+                @Override
+                public void onError(Ad ad, AdError error) {
+                    // Ad error callback
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+                    View adView = NativeAdView.render(activity, nativeAd, NativeAdView.Type.HEIGHT_300);
+                    LinearLayout nativeAdContainer = (LinearLayout) itemView.findViewById(R.id.native_ad_container_in_list);
+                    nativeAdContainer.addView(adView);
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+                    // Ad clicked callback
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            });
+
+            // Request an ad
+            nativeAd.loadAd();
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case B:
                 View nativeExpressLayoutView = LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.native_express_ad_vua, parent, false);
-                return new NativeExpressAdViewHolder(nativeExpressLayoutView);
+                        inflate(R.layout.item_ads_fb_in_list, parent, false);
+                return new FBAds(nativeExpressLayoutView);//new NativeExpressAdViewHolder(nativeExpressLayoutView);
             default:
             case A:
                 View menuItemLayouthView = LayoutInflater.from(parent.getContext()).
@@ -85,10 +124,10 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
     }
 
     @Override
-    public void setViewHolderB(ViewHolderB viewHolder, int position) {
-//        NativeExpressAdViewHolder nativeExpressAdViewHolder = (NativeExpressAdViewHolder) viewHolder;
-//        nativeExpressAdViewHolder.nativeExpressAdView.loadAd(new AdRequest.Builder().build());
+    public void ViewHolderAds(AdaptorResycleViewADS.ViewHolderAds viewHolder, int position) {
+
     }
+
 
     @Override
     public void setViewHolderA(ViewHolderA viewHolder, int position) {
@@ -101,7 +140,6 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
         if (Conections.isOnline(activity))
             Glide.with(activity).load(linkImg).into(danhNgonHover.imView);
         else Glide.with(activity).load(R.drawable.a151).into(danhNgonHover.imView);
-
 //        Glide.with(activity).load(activity.getImages().get(random.nextInt(activity.getImages().size()))).into(danhNgonHover.imView);
         danhNgonHover.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
