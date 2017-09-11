@@ -9,10 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.StringLoader;
 import com.d.activity.MainActivity;
 import com.d.object.DanhNgon;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.NativeExpressAdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.NativeExpressAdView;
 import com.lhd.danhngon.R;
 
 import java.util.List;
@@ -29,37 +30,45 @@ import duong.adaptor.AdaptorResycleViewADS;
  */
 
 public class AdaptorDanhNgon extends AdaptorResycleViewADS {
-    private  MainActivity activity;
+    private MainActivity activity;
     private List<Object> listObject;
     private AlertDialog alertDialog;
     private View view;
     private Random random;
+
     class NativeExpressAdViewHolder extends ViewHolderB {
-         NativeExpressAdView nativeExpressAdView;
+//        NativeExpressAdView nativeExpressAdView;
+
         public NativeExpressAdViewHolder(View view) {
             super(view);
-            this.nativeExpressAdView= (NativeExpressAdView) view.findViewById(R.id.ads_navite_vua);
+//            this.nativeExpressAdView = (NativeExpressAdView) view.findViewById(R.id.ads_navite_vua);
         }
     }
-    class DanhNgonHover extends ViewHolderA{
-        TextView stt,content,author;
+
+    class DanhNgonHover extends ViewHolderA {
+        TextView content, author;
+        ImageView imView;
+
         public DanhNgonHover(View itemView) {
             super(itemView);
-            this.stt= (TextView) itemView.findViewById(R.id.tv_stt);
-            this.content= (TextView) itemView.findViewById(R.id.tv_content);
-            this.author= (TextView) itemView.findViewById(R.id.tv_author);
+//            this.stt = (TextView) itemView.findViewById(R.id.tv_stt);
+            this.content = (TextView) itemView.findViewById(R.id.tv_content);
+            this.author = (TextView) itemView.findViewById(R.id.tv_author);
+            this.imView = (ImageView) itemView.findViewById(R.id.im_bn_dn);
 
         }
     }
+
     public AdaptorDanhNgon(RecyclerView recyclerView,
                            List<Object> listObject,
                            Object doiTuongCanThem,
                            int viTriThem, MainActivity activity) {
-        super(recyclerView, listObject, doiTuongCanThem, viTriThem,activity);
+        super(recyclerView, listObject, doiTuongCanThem, viTriThem, activity);
         this.listObject = listObject;
         this.activity = activity;
-        random=new Random();
+        random = new Random();
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
@@ -74,68 +83,75 @@ public class AdaptorDanhNgon extends AdaptorResycleViewADS {
                 return new DanhNgonHover(menuItemLayouthView);
         }
     }
+
     @Override
     public void setViewHolderB(ViewHolderB viewHolder, int position) {
-        NativeExpressAdViewHolder nativeExpressAdViewHolder= (NativeExpressAdViewHolder) viewHolder;
-        nativeExpressAdViewHolder.nativeExpressAdView.loadAd(new AdRequest.Builder().build());
+//        NativeExpressAdViewHolder nativeExpressAdViewHolder = (NativeExpressAdViewHolder) viewHolder;
+//        nativeExpressAdViewHolder.nativeExpressAdView.loadAd(new AdRequest.Builder().build());
     }
+
     @Override
-    public void setViewHolderA( ViewHolderA viewHolder, int position) {
-        DanhNgonHover danhNgonHover= (DanhNgonHover) viewHolder;
-         final DanhNgon danhNgon= (DanhNgon) getListObject().get(position);
-        danhNgonHover.stt.setText(""+(listObject.indexOf(danhNgon)+1));
+    public void setViewHolderA(ViewHolderA viewHolder, int position) {
+        DanhNgonHover danhNgonHover = (DanhNgonHover) viewHolder;
+        final DanhNgon danhNgon = (DanhNgon) getListObject().get(position);
+        String linkImg = activity.getRandomImage();
+//        danhNgonHover.stt.setText("" + (listObject.indexOf(danhNgon) + 1));
         danhNgonHover.content.setText(danhNgon.getContent());
         danhNgonHover.author.setText(danhNgon.getAuthor());
+        if (Conections.isOnline(activity))
+            Glide.with(activity).load(linkImg).into(danhNgonHover.imView);
+        else Glide.with(activity).load(R.drawable.a151).into(danhNgonHover.imView);
+
+//        Glide.with(activity).load(activity.getImages().get(random.nextInt(activity.getImages().size()))).into(danhNgonHover.imView);
         danhNgonHover.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                activity.getAdsFull().showADSFull();
-                LayoutInflater layoutInflater=LayoutInflater.from(activity);
-                view= (View) layoutInflater.inflate(R.layout.view_danh_ngon,null);
-                TextView tvContent= (TextView) view.findViewById(R.id.tv_content);
-                TextView tvAuthor= (TextView) view.findViewById(R.id.tv_author);
-                ImageView img= (ImageView) view.findViewById(R.id.im_bn_dn);
+                LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                view = (View) layoutInflater.inflate(R.layout.view_danh_ngon, null);
+                TextView tvContent = (TextView) view.findViewById(R.id.tv_content);
+                TextView tvAuthor = (TextView) view.findViewById(R.id.tv_author);
+                ImageView img = (ImageView) view.findViewById(R.id.im_bn_dn);
                 tvContent.setText(danhNgon.getContent());
                 tvAuthor.setTextColor(activity.getColorApp());
                 tvAuthor.setText(danhNgon.getAuthor());
                 if (Conections.isOnline(activity))
-                Glide.with(activity).load(activity.getRandomImage()).into(img);
-                else{
+                    Glide.with(activity).load(activity.getRandomImage()).into(img);
+                else {
                     Glide.with(activity).load(R.drawable.a151).into(img);
-                    Communication.showToast(activity,activity.getResources().getString(R.string.toast_offline));
+                    Communication.showToast(activity, activity.getResources().getString(R.string.toast_offline));
                 }
-                String favorite="Yêu thích";
-                if (danhNgon.getFavorite().contains("1")) favorite="Bỏ thích";
-                alertDialog=DiaLogThongBao.createDiaLogCustemView(activity, view,null,
-                        "Chia sẻ ảnh","Gim thẻ", favorite, activity.getColorApp(), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ScreenShort screenShort=new ScreenShort();
-                        screenShort.shareImageByFile( screenShort.takeSreenShortByView(view,activity),activity);
-                    }
-                },new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (danhNgon.getFavorite().contains("1")) activity.getDuLieu().updateDanhNgonUnfarvorite(danhNgon);
-                        else activity.getDuLieu().updateDanhNgonFarvorite(danhNgon);
-                        notifyDataSetChanged();
-                        alertDialog.dismiss();
-                        activity.getAdsFull().showADSFull();
+                String favorite = "Yêu thích";
+                if (danhNgon.getFavorite().contains("1")) favorite = "Bỏ thích";
+                alertDialog = DiaLogThongBao.createDiaLogCustemView(activity, view, null,
+                        "Chia sẻ ảnh", "Gim thẻ", favorite, activity.getColorApp(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ScreenShort screenShort = new ScreenShort();
+                                screenShort.shareImageByFile(screenShort.takeSreenShortByView(view, activity), activity);
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (danhNgon.getFavorite().contains("1"))
+                                    activity.getDuLieu().updateDanhNgonUnfarvorite(danhNgon);
+                                else activity.getDuLieu().updateDanhNgonFarvorite(danhNgon);
+                                notifyDataSetChanged();
+                                alertDialog.dismiss();
+//                                activity.getAdsFull().showADSFull();
 
-                    }
-                },new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                    }
-                });
+                            }
+                        });
 
             }
         });
 
     }
-
-
 
 
 }

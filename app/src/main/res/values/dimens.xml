@@ -7,5 +7,5 @@
     <dimen name="margin_view">5dp</dimen>
     <dimen name="margin_view_inner">5dp</dimen>
     <dimen name="margin_item">5dp</dimen>
-    <dimen name="margin_card">5dp</dimen>
+    <dimen name="margin_card">10dp</dimen>
 </resources>

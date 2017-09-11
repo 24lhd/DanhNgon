@@ -12,6 +12,7 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 
@@ -22,15 +23,14 @@ android {
         applicationId "com.lhd.danhngon"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20
-        versionName "2.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 23
+        versionName "2.3"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled true
-            useProguard true
+            minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,9 +38,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile project(':Duong')
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
@@ -49,11 +46,9 @@ dependencies {
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-vector-drawable:25.1.1'
-    compile 'com.google.firebase:firebase-ads:10.0.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
 
-
-apply plugin: 'com.google.gms.google-services'

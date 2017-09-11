@@ -42,13 +42,14 @@ import com.d.database.DuLieu;
 import com.d.fragment.FmCaiDat;
 import com.d.fragment.FmDanhNgon;
 import com.d.fragment.FmRecycleView;
-import com.d.object.ADSFull;
+//import com.d.object.ADSFull;
 import com.d.object.Category;
 import com.d.object.DanhNgon;
-import com.d.service.AdsService;
 import com.d.task.TaskGetCategory;
 import com.d.task.TaskGetDanhNgon;
 import com.d.task.TaskGetImage;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.lhd.danhngon.R;
 
 import java.util.ArrayList;
@@ -89,12 +90,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FmCaiDat fmCaiDat;
     private ArrayList<String> images;
     private DrawerLayout drawer;
-    private ADSFull adsFull;
+    //    private ADSFull adsFull;
     private AlertDialog alertDialog;
     private Random random;
     private NavigationView navigationView;
     private GradientDrawable tab_unselecter;
     private GradientDrawable tab_selecter;
+    private AppEventsLogger logger;
 
     public int getColorApp() {
         return colorApp;
@@ -102,6 +104,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private int colorApp;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppEventsLogger.activateApp(this);
+    }
+
+    // for Android, you should also log app deactivation
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AppEventsLogger.deactivateApp(this);
+    }
+
+//Gọi sau setContentView
+
+    //Gửi mã tracking lên FB analytic
+//    AppEventsLogger logger = AppEventsLogger.newLogger(this);
+
+    // Add to a button click handler
+//logger.logEvent(""Button_start_click"");  // Đặt vào sự kiện muốn tracking, key này sẽ gửi lên FB analytic"
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void initViewIntro() {
         setContentView(R.layout.layout_intro);
+        logger = AppEventsLogger.newLogger(this);
         appLog = new AppLog();
         appLog.openLog(this, STATE_UI);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -139,8 +162,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initViewMain() {
         setContentView(R.layout.activity_main);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         ChucNangPhu.showLog("" + images.size());
-        adsFull = new ADSFull(this);
+//        adsFull = new ADSFull(this);
         random = new Random();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -157,38 +181,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        Glide.with(this).load(R.drawable.a151).into(headIm);
 //        getRanRomDanhNgon(headContent,headAuthor,headIm);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                try {
-                    getRanRomDanhNgon(headContent, headAuthor, headIm);
-                } catch (Exception e) {
-                }
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
-        });
+//        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+//            }
+//
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            }
+//
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                try {
+//                    getRanRomDanhNgon(headContent, headAuthor, headIm);
+//                } catch (Exception e) {
+//                }
+//            }
+//
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+//
+//            }
+//        });
         drawer.setDrawerListener(toggle);
-        View v = navigationView.getHeaderView(0);
-        headIm = (ImageView) v.findViewById(R.id.header_im_bn_dn);
-        headContent = (TextView) v.findViewById(R.id.header_tv_content);
-        headAuthor = (TextView) v.findViewById(R.id.header_tv_author);
-        ChucNangPhu.showLog("header_im_bn_dn " + (headIm instanceof ImageView));
+//        View v = navigationView.getHeaderView(0);
+//        headIm = (ImageView) v.findViewById(R.id.header_im_bn_dn);
+//        headContent = (TextView) v.findViewById(R.id.header_tv_content);
+//        headAuthor = (TextView) v.findViewById(R.id.header_tv_author);
+//        ChucNangPhu.showLog("header_im_bn_dn " + (headIm instanceof ImageView));
         toggle.syncState();
         setUI(appLog.getValueByName(this, STATE_UI, "StatusBar"),
                 appLog.getValueByName(this, STATE_UI, "toolbar"),
@@ -217,10 +241,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void initData() {
         duLieu = new DuLieu(this);
-        if (!AdsService.isRunning(this)) {
-            Intent intent1 = new Intent(this, AdsService.class);
-            this.startService(intent1);
-        }
+//        if (!AdsService.isRunning(this)) {
+//            Intent intent1 = new Intent(this, AdsService.class);
+//            this.startService(intent1);
+//        }
         DanhNgon danhNgon = (DanhNgon) getIntent().getSerializableExtra("like");
         if (danhNgon instanceof DanhNgon) duLieu.updateDanhNgonFarvorite(danhNgon);
         try {
@@ -326,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            adsFull.showADSFull();
+//            adsFull.showADSFull();
             finish();
         }
 
@@ -334,9 +358,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public ADSFull getAdsFull() {
-        return adsFull;
-    }
+//    public ADSFull getAdsFull() {
+//        return adsFull;
+//    }
 
     /**
      * khi item navvigation dc chọn
@@ -356,16 +380,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.danh_ngon) {
             setViewDanhNgon();
         } else if (id == R.id.cai_dat) {
-            adsFull.showADSFull();
+//            adsFull.showADSFull();
+            logger.logEvent("cai_dat_cick");
             caiDat();
         } else if (id == R.id.danh_gia) {
             danhGiaApp();
+            logger.logEvent("danh_gia_cick");
         } else if (id == R.id.chia_se) {
             chiaSeApp();
+            logger.logEvent("chia_se_cick");
         } else if (id == R.id.more_app) {
             moreApp();
+            logger.logEvent("more_app_cick");
         } else if (id == R.id.thay_doi_ui) {
-            adsFull.showADSFull();
+//            adsFull.showADSFull();
             showDialogSetUI();
         } else if (id == R.id.yeu_thich) {
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -475,6 +503,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showDialogSetUI() {
+        logger.logEvent("DialogSetUI_cick");
         alertDialog = null;
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.layout_change_ui, null);
@@ -553,6 +582,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Communication.showToast(this, "Chức năng này đang được phát triển");
+        logger.logEvent("MenuItem_cick_" + item.getItemId());
         return super.onOptionsItemSelected(item);
     }
 
@@ -562,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setViewDanhNgon() {
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fmDanhNgon = new FmDanhNgon();
-        getRanRomDanhNgon(headContent, headAuthor, headIm);
+//        getRanRomDanhNgon(headContent, headAuthor, headIm);
         transaction.replace(R.id.frame_fm, fmDanhNgon);
         transaction.commit();
     }
@@ -685,9 +715,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /*
-        lấy một image bất kì tỏng mảng
-         */
+       lấy một image bất kì tỏng mảng
+       */
     public String getRandomImage() {
+
         return images.get((new Random()).nextInt(images.size()));
     }
 }

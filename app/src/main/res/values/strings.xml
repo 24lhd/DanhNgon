@@ -52,4 +52,5 @@
     <string name="ads_native_full">ca-app-pub-7062977963627166/1098571330</string>
     <string name="toast_offline">Bạn đang ở chế độ ngoại tuyến</string>
     <string name="about_app">Ứng dụng được phát triển bởi #Ken từ 1001 Câu Danh Ngôn Ý Nghĩa</string>
+    <string name="facebook_app_id">126697414631909</string>
 </resources>

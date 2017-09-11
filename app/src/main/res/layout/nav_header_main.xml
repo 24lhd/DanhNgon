@@ -3,50 +3,50 @@
     android:layout_width="match_parent"
     android:id="@+id/view_dn"
     android:layout_height="@dimen/nav_header_height">
-    <ImageView
-        android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@color/colorBlue_200"
-        android:id="@+id/header_im_bn_dn"
-        android:layout_height="@dimen/nav_header_height" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_alignBottom="@id/header_im_bn_dn"
-        android:background="@color/bg_danhngon"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/margin_view"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/header_tv_content"
-                android:textStyle="bold"
-                android:shadowColor="@color/colorBlack"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="2"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header">
-            </TextView>
-            <TextView
-                android:layout_width="match_parent"
-                android:id="@+id/header_tv_author"
-                android:gravity="right"
-                android:textStyle="bold"
-                android:shadowColor="@color/colorBlack"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="2"
-                style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header"
-                android:textColor="@color/colorAccent"
-                android:layout_height="wrap_content">
-            </TextView>
-        </LinearLayout>
-    </ScrollView>
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@color/colorBlue_200"-->
+        <!--android:id="@+id/header_im_bn_dn"-->
+        <!--android:layout_height="@dimen/nav_header_height" />-->
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_alignBottom="@id/header_im_bn_dn"-->
+        <!--android:background="@color/bg_danhngon"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_margin="@dimen/margin_view"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:id="@+id/header_tv_content"-->
+                <!--android:textStyle="bold"-->
+                <!--android:shadowColor="@color/colorBlack"-->
+                <!--android:shadowDx="2"-->
+                <!--android:shadowDy="2"-->
+                <!--android:shadowRadius="2"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textColor="@color/colorWhite"-->
+                <!--style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header">-->
+            <!--</TextView>-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:id="@+id/header_tv_author"-->
+                <!--android:gravity="right"-->
+                <!--android:textStyle="bold"-->
+                <!--android:shadowColor="@color/colorBlack"-->
+                <!--android:shadowDx="2"-->
+                <!--android:shadowDy="2"-->
+                <!--android:shadowRadius="2"-->
+                <!--style="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Header"-->
+                <!--android:textColor="@color/colorAccent"-->
+                <!--android:layout_height="wrap_content">-->
+            <!--</TextView>-->
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 
 
